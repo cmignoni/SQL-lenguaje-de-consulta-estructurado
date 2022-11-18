@@ -75,19 +75,19 @@ Existen dos tipos de comandos SQL:
 \begin{tabular}{ll}
 CREATE &	Utilizado para crear nuevas tablas y campos. \\
 DROP &	Empleado para eliminar tablas. \\
-ALTER &	Utilizado para modificar las tablas agregando campos o cambiando la 
-definición de los campos. \\
+ALTER &	Utilizado para modificar las tablas agregando campos o cambiando la \\ 
+& definición de los campos. \\
 
 \end{tabular}
 
 • Los que permiten generar consultas para ordenar, filtrar y extraer datos de la base de datos.
 
 \begin{tabular}{ll}
-SELECT &	Utilizado para consultar registros de la base de datos que satisfagan 
-un criterio determinado. \\
+SELECT &	Utilizado para consultar registros de la base de datos que satisfagan \\ 
+& un criterio determinado. \\
 INSERT &	Utilizado para cargar datos en la base de datos en una única operación. \\
-UPDATE &	Utilizado para modificar los valores de los campos y registros 
-especificados. \\
+UPDATE &	Utilizado para modificar los valores de los campos y registros \\ 
+& especificados. \\
 DELETE &	Utilizado para eliminar registros de una tabla de una base de datos. \\
 
 \end{tabular}
@@ -99,15 +99,15 @@ Las cláusulas son condiciones utilizadas para indicar cuales son los datos que 
 
 \begin{tabular}{ll}
 
-FROM &	Utilizada para especificar la tabla de la cual se van a seleccionar 
-los registros.  \\
-WHERE &	Utilizada para especificar las condiciones que deben reunir los 
-registros que se van a seleccionar. \\
-GROUP BY &	Utilizada para clasificar los registros seleccionados en 
-grupos específicos. \\
+FROM &	Utilizada para especificar la tabla de la cual se van a seleccionar \\ 
+& los registros.  \\
+WHERE &	Utilizada para especificar las condiciones que deben reunir los \\ 
+& registros que se van a seleccionar. \\
+GROUP BY &	Utilizada para clasificar los registros seleccionados en \\ 
+& grupos específicos. \\
 HAVING &	Utilizada para expresar la condición que debe satisfacer cada grupo. \\
-ORDER BY &	Utilizada para ordenar los registros seleccionados de acuerdo 
-con un orden específico. \\
+ORDER BY &	Utilizada para ordenar los registros seleccionados de acuerdo \\ 
+& con un orden específico. \\
 
 \end{tabular}
 
@@ -116,10 +116,10 @@ con un orden específico. \\
 **Operadores Lógicos**
 
 \begin{tabular}{ll}
-AND &	Evalúa dos condiciones y devuelve un valor de verdad sólo si ambas son 
-ciertas. \\
-OR &	Evalúa dos condiciones y devuelve un valor de verdad si alguna de las 
-dos es cierta. \\
+AND &	Evalúa dos condiciones y devuelve un valor de verdad sólo si ambas son \\ 
+& ciertas. \\
+OR &	Evalúa dos condiciones y devuelve un valor de verdad si alguna de las \\ 
+& dos es cierta. \\
 NOT &	Devuelve el valor contrario de la expresión. \\
 
 \end{tabular}
@@ -176,7 +176,7 @@ Finalmente, las declaraciones *SQL* solo pueden ejecutarse dentro de *PROC SQL*.
 Los resultados que produce la consulta anterior se observe en la siguiente imagen que muestra una ventana output de SAS
 
 ```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("g:/Mi unidad/SQL lenguaje de consulta estructurado/Material en RMarkDown/Image/img_001.1.png")
+knitr::include_graphics("Image/img_001.1.png")
 ```
 
 Las columnas se presentan en el orden en que se especificaron en SELECT y, de forma predeterminada, se utiliza la etiqueta de la columna (si existe).
@@ -186,8 +186,8 @@ Las columnas se presentan en el orden en que se especificaron en SELECT y, de fo
 *PROC SQL* funciona igual que todos los demás procedimientos *SAS*, los resultados de una consulta se muestran de forma predeterminada en la ventana de output, pero es posible defnir varias salidas *ODS* para que los resultados de una consulta *SELECT* se muestren en todos los destinos ODS abiertos; el siguiente código muestra como sería:
 
 ```{r, echo=TRUE,  eval=FALSE}
-    ods html body='c:\temp\Mundo.html';
-    ods pdf file='c:\temp\ Mundo.pdf';
+    ods html body="c:\temp\Mundo.html";
+    ods pdf file="c:\temp\Mundo.pdf";
     proc sql;
       select pais, 
              poblac, 
@@ -280,7 +280,7 @@ De la misma manera que se utilizó la palabra clave *AS* para cambiar el nombre 
 El resultado de la consulta anterior se vería de la siguiente manera:
 
 ```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("g:/Mi unidad/SQL lenguaje de consulta estructurado/Material en RMarkDown/Image/img_003.png")
+knitr::include_graphics("Image/img_003.png")
 ```
 
 Se puede ver que la nueva columna en la consulta tiene la etiqueta "IMC", si se hubiera incluido una instrucción *CREATE TABLE* este habría sido el nombre de la variable. Si no se especifica *AS*, en la salida, la columna no habría tenido etiqueta, solo espacio en blanco, y el nombre de la variable en el conjunto de datos creado sería _TEMA001. Si para la creacion de nuevas columnas no se especifica "*AS nombre*", las mismas se llamarían _TEMA002, _TEMA003, etc. Observar la importancia de nombrar las nuevas columnas, principalmente cuando se esta creando un nuevo conjunto de datos o se esta haciendo una salida impresa.
@@ -534,7 +534,7 @@ Por defecto, las funciones de resumen funcionan en todas las filas de una tabla.
 Los resultados parciales de la consulta anterior se muestran aquí:
 
 ```{r, echo=FALSE}
-knitr::include_graphics("g:/Mi unidad/SQL lenguaje de consulta estructurado/Material en RMarkDown/Image/img_100.png")
+knitr::include_graphics("Image/img_100.png")
 ```
  
 Se puede Observar que hay una fila por departamento y que la población total se ha resumido. Recordar de la sección anterior que sin la cláusula GROUP BY, la población total de la tabla se habría agregado a cada fila de la tabla.
@@ -631,12 +631,11 @@ El paquete *sqldf* es simple, desde el punto de vista de R hay una sola función
 
 
 ```{r echo=F, eval=TRUE}
-setwd("c:/Users/Cesar/Documents/SQL lenguaje de consulta estructurado/Datos")
-iris <- read.csv("iris.csv")
-Naranjo <- read.csv("Naranjo.csv")
-BOD <- read.csv("BOD.csv")
-rock <- read.csv(file = "rock.csv", sep=",", header = T, dec = ".")
-chickwts <- read.csv(file = "chickwts.csv", sep=",", header = T, dec = ".")
+iris <- read.csv("Datos/iris.csv")
+Naranjo <- read.csv("Datos/Naranjo.csv")
+BOD <- read.csv("Datos/BOD.csv")
+rock <- read.csv(file = "Datos/rock.csv", sep=",", header = T, dec = ".")
+chickwts <- read.csv(file = "Datos/chickwts.csv", sep=",", header = T, dec = ".")
 ```
 
 
