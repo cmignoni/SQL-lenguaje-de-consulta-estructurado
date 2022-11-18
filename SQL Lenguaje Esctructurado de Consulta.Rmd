@@ -1,5 +1,5 @@
 ---
-title: "SOL \n Lenguaje Estructurado de Consultas"
+title: "SQL - Lenguaje Estructurado de Consultas"
 #author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 fontsize: 12pt
@@ -25,20 +25,19 @@ library(sqldf)
 ```
 
 
-# Introducción a SQL
+# Introducción
 
-El lenguaje estructurado de consultas (SQL) es un lenguaje de base de datos estándar, utilizado por la mayoría de los sistemas de gestión de bases de datos relacionales u objeto-relacionales.
+El lenguaje estructurado de consultas __SQL__ (*Structured Query Language*) surge como un leguaje para realizar consultas en bases de datos relacional, modelo definido por el Dr. Edgar F. Codd de IBM en la década de los 70´, luego fue incorporado por muchos lenguajes de programación como una herramienta que permite realizar consultas y obtener conjuntos de datos de una manera rápida con una sintaxis sencilla. Actualmente, se lo puede utilizar en __SAS__ mediante el procedimiento _Proc sql_ y en __R__ con varios paquetes, uno de ellos _sqldf_.
 
-Es un lenguaje declarativo en el que las órdenes especifican cual debe ser el resultado y no la manera de conseguirlo (como ocurre en los lenguajes imperativos o procedimentales). Al ser declarativo es muy sencillo su aprendizaje debido a que permiten escribir las órdenes, utilizando palabras clave (en inglés), como si fueran frases en las que se especifica que es lo que se quiere obtener; aunque a veces es dificil de comprender por el alto grado de abstracción. Por ejemplo:  
-
+Es un lenguaje declarativo en el que las órdenes especifican cual debe ser el resultado y no la manera de conseguirlo, como ocurre en los lenguajes imperativos o procedimentales. Al ser declarativo, su aprendizaje es muy sencillo debido a que permiten escribir las órdenes, utilizando palabras clave (en inglés), como si fueran frases en las que se especifica que es lo que se quiere obtener. Por ejemplo:  
 
 ```{r, echo=TRUE, eval=FALSE} 
       SELECT nomemp FROM empleados WHERE sigladepto=’prod’ ORDER BY nomemp;
 ```
 
-Esta sentencia devuelve el nombre de aquellos empleados que pertenecen al departamento producción (*prod*) y los presenta ordenados por nombre.
+La sentencia anterior devuelve el nombre de aquellos empleados que pertenecen al departamento producción (*prod*) y los presenta ordenados por nombre.
 
-Debido a su eficiencia se ha convertido en un estándar para las bases de datos relacionales, de hecho, el gran éxito del modelo de base de datos relacional se debe en parte a la utilización de un lenguaje como SQL. Sobre la base común del lenguje se han desarrollado diversas versiones ampliadas como las de Oracle o la de Microsoft SQL server. Los comandos que contiene permiten realizar diversos tipos de tareas:
+Los comandos que contiene el _Lenguaje Estructurado de Consultas (SQL)_ permiten realizar diversos tipos de tareas:
 
 * Comandos para la **definición y creación** de un conjunto de datos (create table).
 
@@ -52,7 +51,7 @@ Debido a su eficiencia se ha convertido en un estándar para las bases de datos 
 
 * **Funciones de agregación**: Operaciones tales como promedio (average), suma (sum), máximo (max), etc. se pueden aplicar a las columnas de una tabla para obtener una cantidad única y, a su vez, incluirla en consultas más complejas.
 
-En una base de datos relacional, los resultados de la consulta van a ser datos individuales, tuplas o tablas, generados a partir de un comando para consultas en el que se establecen una serie de condiciones. Por ejemplo una típica consulta sobre una tabla en una base de datos relacional, utilizando SQL podría ser:
+En una base de datos relacional, los resultados de la consulta van a ser datos individuales, tuplas o tablas, generados a partir de un comando para consultas en el que se establecen una serie de condiciones. Por ejemplo una típica consulta sobre una tabla en una base de datos relacional, utilizando *SQL* podría ser:
 
 ```{r, echo=T,  eval=FALSE,}
       SELECT numemp, nomemp, cargoid
@@ -64,7 +63,7 @@ El resultado será un listado que tendrá tres columnas (numemp, nomemp, cargoid
 
 ## Componentes del SQL
 
-El lenguaje SQL está compuesto por comandos, cláusulas, operadores y funciones de agregado. Estos elementos se combinan en las instrucciones para crear, actualizar y manipular las bases de datos.
+El lenguaje *SQL* está compuesto por comandos, cláusulas, operadores y funciones de agregación. Estos elementos se combinan en las instrucciones para crear, actualizar y manipular las bases de datos.
 
 ### Comandos
 
@@ -101,8 +100,7 @@ Las cláusulas son condiciones utilizadas para indicar cuales son los datos que 
 
 FROM &	Utilizada para especificar la tabla de la cual se van a seleccionar \\ 
 & los registros.  \\
-WHERE &	Utilizada para especificar las condiciones que deben reunir los \\ 
-& registros que se van a seleccionar. \\
+WHERE &	Utilizada para especificar las condiciones que deben reunir los \\ & registros que se van a seleccionar. \\
 GROUP BY &	Utilizada para clasificar los registros seleccionados en \\ 
 & grupos específicos. \\
 HAVING &	Utilizada para expresar la condición que debe satisfacer cada grupo. \\
@@ -154,26 +152,24 @@ MIN &	Devuelve el valor más bajo de un campo especificado. \\
 
 El conocimiento obtenido hasta ahora sobre SQL es suficiente para comenzar a usarlo en SAS.
 
-**PROC SQL** es la sentencia SAS que permite ejecutar las estructuras del lenguaje SQL encerrando las cláusulas del mismo.
+Como se mencionó en la intro de este material el procedimiento *PROC SQL* es la sentencia **SAS** que permite ejecutar las estructuras del lenguaje **SQL** encerrando las cláusulas del mismo.
 
 ```{r, echo=TRUE,  eval=FALSE}
-
     proc sql;
     select pais, 
            poblac, 
            relig
     	from Datos.Mundo; 
     quit;
-
 ```
 
-Lo primero que hay que tener en cuenta sobre la sintaxis de *PROC SQL* es que toda la consulta (SELECT...FROM...) se trata como una sola declaración. Solo hay un punto y coma (;) colocado al final de la consulta. Esto es así sin importar la complejidad de la consulta o cuántas cláusulas contenga.
+Lo primero que hay que tener en cuenta sobre la sintaxis de *PROC SQL* es que toda la consulta (*SELECT*...*FROM*...) se trata como una sola declaración. Solo hay un punto y coma (;) colocado al final de la consulta. Esto es así sin importar la complejidad de la consulta o cuántas cláusulas contenga.
 
 En segundo lugar, el procedimiento finaliza con una instrucción *QUIT* en lugar de una instrucción *RUN*. Las consultas se ejecutan de forma inmediata, tan pronto como cuando llega al punto y coma de la instrucción *SELECT*. Hay dos cosas a tener en cuenta: 1) una sola instancia de *PROC SQL* puede contener más de una consulta y 2) la instrucción *QUIT* no es necesaria para que se ejecuten las consultas.
 
-Finalmente, las declaraciones *SQL* solo pueden ejecutarse dentro de *PROC SQL*. No se pueden colocar en otros procedimientos o en el código de un paso data.
+Finalmente, las declaraciones *SQL* solo pueden ejecutarse dentro de *PROC SQL*. No se pueden colocar en otros procedimientos o en el código de un paso *Data*.
 
-Los resultados que produce la consulta anterior se observe en la siguiente imagen que muestra una ventana output de SAS
+Los resultados que produce la consulta anterior se observa en la siguiente imagen que muestra una ventana output de SAS
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/img_001.1.png")
@@ -183,7 +179,7 @@ Las columnas se presentan en el orden en que se especificaron en SELECT y, de fo
 
 ## Una salida distinta para los resultados
 
-*PROC SQL* funciona igual que todos los demás procedimientos *SAS*, los resultados de una consulta se muestran de forma predeterminada en la ventana de output, pero es posible defnir varias salidas *ODS* para que los resultados de una consulta *SELECT* se muestren en todos los destinos ODS abiertos; el siguiente código muestra como sería:
+*PROC SQL* funciona igual que todos los demás procedimientos *SAS*, los resultados de una consulta se muestran de forma predeterminada en la ventana de output, pero es posible defnir varias salidas *ODS* para que los resultados de una consulta *SELECT* se muestren en todos los destinos *ODS* abiertos; el siguiente código muestra como sería:
 
 ```{r, echo=TRUE,  eval=FALSE}
     ods html body="c:\temp\Mundo.html";
@@ -198,9 +194,9 @@ Las columnas se presentan en el orden en que se especificaron en SELECT y, de fo
     ods pdf close;
 ```
 
-Producirá resultados en los tres destinos ODS abiertos: la ventana de resultados (el destino OUTPUT está abierto de forma predeterminada), un archivo HTML y un archivo PDF.
+Producirá resultados en los tres destinos *ODS* abiertos: la ventana de resultados (el destino *OUTPUT* está abierto de forma predeterminada), un archivo *HTML* y un archivo *PDF*.
 
-También se puede crear un conjunto de datos SAS (una tabla) a partir de los resultados de la consulta precediendo la instrucción SELECT con una instrucción CREATE TABLE.
+También se puede crear un conjunto de datos SAS (una tabla) a partir de los resultados de la consulta precediendo la instrucción *SELECT* con una instrucción *CREATE TABLE*.
 
 ```{r, echo=TRUE,  eval=FALSE}
     proc sql;
@@ -218,7 +214,7 @@ La instrucción CREATE TABLE hace dos cosas:
 
 2.	Suprime la salida impresa de la consulta.
 
-En cuanto a los destinos ODS que pudieran estar abiertos no se les daría importancia y no se generaría las salidas. El orden de las columnas en la instrucción SELECT no solo determina el orden en la salida de la consulta, sino que también determina el orden en una tabla si se usa CREATE TABLE.
+En cuanto a los destinos *ODS* que pudieran estar abiertos no se les daría importancia y no se generaría las salidas. El orden de las columnas en la instrucción *SELECT* no solo determina el orden en la salida de la consulta, sino que también determina el orden en una tabla si se usa *CREATE TABLE*.
 
 ## Opciones de la declaración SELECT
 
