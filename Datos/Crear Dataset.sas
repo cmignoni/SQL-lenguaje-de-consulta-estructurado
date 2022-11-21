@@ -93,7 +93,7 @@ quit ;
 
 proc sql ;
 create table datos.Departamentos
-(ID num NOT NULL,
+(ID num,
 Nombre char (20) NOT NULL label="Nombre Departameto");
 quit ;
 *PILOTOS;
