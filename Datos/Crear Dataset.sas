@@ -88,3 +88,36 @@ insert into datos.Pilotos_SQL
 values(1,'Smith')
 values(2,'Wilson');
 quit ;
+
+*CREACION DE LAS TABLAS DEPARTAMENTOS Y EMPLEADOS;
+
+proc sql ;
+create table datos.Departamentos
+(ID num NOT NULL,
+Nombre char (20) NOT NULL label="Nombre Departameto");
+quit ;
+*PILOTOS;
+proc sql ;
+create table datos.Empleados
+(Nombre char (30) NOT NULL label="Nombre Empleado",
+departamentoID num);
+quit ;
+
+proc sql;
+insert into datos.Departamentos
+  VALUES(31, 'Sales')
+  VALUES(33, 'Engineering')
+  VALUES(34, 'Clerical')
+  VALUES(35, 'Marketing');
+quit ;
+
+proc sql ;
+insert into datos.Empleados
+  VALUES('Rafferty', 31)
+  VALUES('Jones', 33)
+  VALUES('Heisenberg', 33)
+  VALUES('Robinson', 34)
+  VALUES('Smith', 34)
+  VALUES('Williams', NULL);
+quit ;
+
