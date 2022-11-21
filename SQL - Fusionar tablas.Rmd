@@ -1,0 +1,237 @@
+---
+title: "SQL - Fusionar conjuntos de datos "
+#author: "César Mignoni"
+#date: "`r format(Sys.Date(), '%d.%m.%Y')`"
+fontsize: 12pt
+geometry: a4paper, margin=2cm
+# geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+documentclass: article
+output: pdf_document
+df_print: paged
+fig_caption: yes
+keep_tex: yes
+header-include:
+  -/usepackage[spanish]{babel}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                    fig.width=3, 
+                    fig.height=3,
+                    fig.align = "center", 
+                    fig.pos="hp")
+```
+
+# Cómo unir (fusionar)  conjuntos de datos (internos, externos, izquierdo, derecho) en R
+Se puede combinar dos conjuntos de datos en R usando la función Merge(). Los  conjuntos de datos deben tener los mismos nombres de columna en los que se produce la fusión. La función Merge() en R es similar a la operación de unión de base de datos en SQL. Los diferentes argumentos para Merge() permiten realizar combinaciones naturales, así como combinaciones externas izquierda, derecha y completa. Se puede realizar Unión (Join) en R usando la Función merge().
+Los argumentos de la función merge() en R son:
+	"x" : conjunto de datos 1.
+	"y" : conjunto de datos 2.
+	"by" , "x" , "by.y" : los nombres de las columnas que son comunes a "x"  e "y" . El valor predeterminado es usar las columnas con nombres comunes entre los dos  conjuntos de datos.
+	"all,all.x,all.y" : valores lógicos que especifican el tipo de fusión. El valor predeterminado es "all=FALSE"  (lo que significa que solo se devuelven las filas coincidentes).
+## Entender los diferentes tipos de fusión en R:
+	Unión (Join) natural: para mantener solo las filas que coinciden con los  conjuntos de datos, especifique el argumento "all=FALSE" .
+	Unión (Join) externa completa: para mantener todas las filas de ambos  conjuntos de datos, especifique "all=TRUE" .
+	Unión (Join) externa izquierda: para incluir todas las filas de su conjunto de datos x y solo aquellas de y que coincidan, especifique "all.x=TRUE" .
+	Unión (Join) externa derecha: para incluir todas las filas de su  conjunto de datos y y solo las de x que coinciden, especifique "all.y=TRUE" .
+ 
+### Ejemplos prácticos.
+
+Siguiendo dos  conjuntos de datos
+
+data frame 1
+
+```{r, echo=TRUE, eval= TRUE }
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Horno", 3), rep("Televisión", 3)))
+df1
+```
+
+data frame 2
+
+```{r, echo=TRUE, eval=TRUE}
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("California", 2), rep("Texas", 1)))
+df2
+```
+
+Unión interna: devuelve solo las filas en las que la tabla izquierda tiene claves coincidentes en la tabla derecha.
+
+```{r, echo=TRUE, eval=TRUE}
+df <- merge(x = df1, y = df2, by = "CustomerId")
+```
+
+El conjunto de datos" df"  resultante será:
+
+```{r, echo= FALSE, eval=TRUE }
+df
+```
+
+Unión externa: devuelve todas las filas de ambas tablas, registros de unión de la izquierda que tienen claves coincidentes en la tabla derecha.
+
+```{r, echo=TRUE, eval=TRUE}
+df <- merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+```
+
+El conjunto de datos" df"  resultante será:
+
+```{r, echo= FALSE, eval=TRUE }
+df
+```
+
+Unión externa izquierda: devuelve todas las filas de la tabla izquierda y cualquier fila con teclas coincidentes de la tabla derecha.
+
+```{r, echo=TRUE, eval=TRUE}
+df <- merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+```
+
+El conjunto de datos" df"  resultante será:
+
+```{r, echo= FALSE, eval=TRUE }
+df
+```
+
+Unión externa derecha: devuelve todas las filas de la tabla derecha y cualquier fila con teclas coincidentes de la tabla izquierda.
+
+```{r, echo=TRUE, eval=TRUE}
+df <- merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+```
+
+El conjunto de datos" df"  resultante será:
+
+```{r, echo= FALSE, eval=TRUE }
+df
+```
+
+Combinación cruzada: una combinación cruzada (también conocida como combinación cartesiana) da como resultado que cada fila de una tabla se una a cada fila de otra tabla.
+
+```{r, echo=TRUE, eval=TRUE}
+df<-merge(x = df1, y = df2, by = NULL)
+```
+
+El conjunto de datos" df"  resultante será:
+
+```{r, echo= FALSE, eval=TRUE }
+df
+```
+
+# Cómo unir (fusionar)  conjuntos de datos (internos, externos, izquierdo, derecho) en SAS
+Se han visto formas de consultar una sola tabla utilizando el procedimiento PROC SQL. Sin embargo, a menudo es necesario obtener datos de tablas independientes. Cuando especifican varios *dataframe* de consulta en la cláusula FROM, PROC SQL los procesa para formar un conjunto de datos. El dataframe resultante contiene datos de cada dataframe fuente o contribuyente. Estas consultas se conocen como *combinaciones*.
+
+Conceptualmente, cuando especifica dos conjuntos de datos, PROC SQL hace coincidir cada fila del primer dataframe con todas las filas del segundo para producir un conjunto de datos interno o intermedio conocido como el *producto cartesiano*. El producto cartesiano de grandes conjuntos de datos puede ser enorme, pero normalmente se obtienen subconjuntos de datos declarando el tipo de combinación. Hay dos tipos de combinaciones:
+
+* **Las combinaciones internas** devuelven una tabla de resultados para todas las filas de una tabla que tienen una o más filas coincidentes en la otra tabla o tablas.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/union_interna.png")
+```
+
+* **Las combinaciones externas** son combinaciones internas que se aumentan con filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/union_idc.png")
+```
+
+La tarea central es unir tablas para obtener un detalle sobre la consulta de tablas individuales.
+
+## PROC SQL JOIN
+
+PROC SQL implementa el lenguaje de consulta estándar y permite al usuario la unión de dataframe mediante consultas de combinación.
+
+Como se ha descripto en el material "*Lenguaje de Consulta Estructurado en SAS y R*", en PROC SQL la cláusula FROM se utiliza en una expresión de consulta para especificar el/los conjunto(s) de datos fuente, y que se combinan para producir el resultado de la unión.
+
+Además de los diversos tipos de combinaciones (internas y externas) que se describen, los ejemplos que se incluyen muestran la igualdad entre los valores de columna provenientes de las tablas que se están uniendo; comparación entre valores calculados; etc. La cláusula WHERE o la cláusula ON contienen las condiciones bajo las cuales algunas filas son guardadas o eliminadas en la tabla de resultados. WHERE se usa para seleccionar filas de uniones internas. ON se utiliza para seleccionar filas de uniones internas o externas.
+
+**Unión izquierda** 
+
+Es un tipo de *unión exterior* en la que la tabla de resultados incluye todas las observaciones de la tabla izquierda, ya sea o no se encuentra una coincidencia para ellos en ninguna de las tablas especificadas a la derecha. Una combinación izquierda entre dos tablas puede ser representada gráficamente como se muestra en el siguiente diagrama de Venn.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/union_izq.png")
+```
+
+**Unión derecha**
+
+Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellos en cualquiera de las tablas especificadas a la izquierda.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/union_der.png")
+```
+
+Unión completa
+
+Cuando una unión se especifica como una combinación completa, la tabla de resultados incluye todas las observaciones del producto cartesiano de dos tablas para las cuales la expresión SQL es verdadera, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla. La representación visual de la unión externa completa se muestra en el siguiente diagrama de Venn.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/union_comp.png")
+```
+Ejemplos
+
+Unión de tablas **interna**
+
+```{r, echo=TRUE, eval=FALSE}
+proc sql;
+   title 'Oil Production/Reserves of Countries';
+   select p.country, barrelsperday 'Production', 
+          barrels 'Reserves'
+      from oilprod p, oilrsrvs r
+      where p.country = r.country
+      order by barrelsperday desc;
+quit;
+```
+
+Unión de tablas **externa izquierda**
+
+
+```{r, echo=TRUE, eval=FALSE}
+proc sql;
+   title 'Coordinates of Capital Cities';
+   select Capital format=$20., 
+          Name 'Country' format=$20., 
+          Latitude, Longitude
+      from countries a left join 
+           worldcitycoords b
+           on a.Capital = b.City and
+              a.Name = b.Country
+      order by Capital;
+quit;
+```
+
+Unión de tablas **externa derecha**
+
+```{r, echo=TRUE, eval=FALSE}
+proc sql;
+   title 'Populations of Capitals Only';
+   select City format=$20., 
+          Country 'Country' format=$20., 
+          Population
+      from countries right join 
+           worldcitycoords 
+           on Capital = City and
+              Name = Country
+      order by City;
+quit;
+
+
+```
+
+   Unión de tablas **externa completa**
+
+
+```{r, echo=TRUE, eval=FALSE}
+proc sql;   
+   title 'Populations/Coordinates of World Cities';
+   select City '#City#(WORLDCITYCOORDS)' format=$20.,
+          Capital '#Capital#(COUNTRIES)' format=$20.,
+          Population, Latitude, Longitude
+      from countries full join 
+           worldcitycoords
+           on Capital = City and
+              Name = Country; 
+quit;
+```
+
+Borrar los títulos
+
+```{r, echo=TRUE, eval=FALSE}
+title;
+```
