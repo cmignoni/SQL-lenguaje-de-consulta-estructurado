@@ -1,6 +1,7 @@
 ---
 title: "SQL - Lenguaje Estructurado de Consultas"
-#author: "César Mignoni"
+subtitle: "en R y SAS"
+author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 fontsize: 12pt
 geometry: a4paper, margin=2cm
