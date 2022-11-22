@@ -1,6 +1,7 @@
 ---
-title: "SQL - Fusionar conjuntos de datos "
-#author: "César Mignoni"
+title: "SQL - Fusionar conjuntos de datos"
+subtitle: "en R y SAS"
+author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 fontsize: 12pt
 geometry: a4paper, margin=2cm
@@ -24,17 +25,14 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-# SQL – Unión de tablas
+<!--# SQL – Unión de tablas-->
 
-## intro 1
-Hasta ahora, todas las consultas que se hicieron han utilizado una sola tabla. Pero, suele suceder que algunas consultas requieran información de más de una tabla. Supongamos que desea una lista de ingredientes y su proveedor (ID y nombre de la empresa). Los nombres de las empresas están en la tabla de proveedores, pero los nombres de los ingredientes están en la tabla de ingredientes. Para responder esto usted mismo, puede revisar cada fila de la tabla de ingredientes y usar el valor de ID de proveedor para buscar el nombre de la empresa en la tabla de proveedores. ¡Qué doloroso proceso!
+## Introducción
 
-Para lidiar con este problema, SQL nos permite derivar una sola tabla que contiene todos los datos deseados. Luego podemos consultar esa tabla usando las técnicas que ya conocemos. La combinación de tablas para derivar una nueva tabla se denomina unión.
+Las formas, que se ha vistos, de ralizar consultas con SQL, es utilizando  una sola tabla.
+<!--Se han visto formas de consultar con SQL utilizando  una sola tabla.--> Sin embargo, a menudo es necesario obtener datos de tablas independientes. Cuando especifican varias *tablas* de consulta en la cláusula FROM, SQL las procesa para formar un conjunto de datos. El *tablas* resultante contiene datos de cada *tablas* fuente. Estas consultas se conocen como *combinaciones*.
 
-## intro 2
-Se han visto formas de consultar con SQL utilizando  una sola tabla. Sin embargo, a menudo es necesario obtener datos de tablas independientes. Cuando especifican varios *dataframe* de consulta en la cláusula FROM, SQL los procesa para formar un conjunto de datos. El *dataframe* resultante contiene datos de cada *dataframe* fuente. Estas consultas se conocen como *combinaciones*.
-
-Conceptualmente, cuando especifica dos conjuntos de datos, SQL hace coincidir cada fila del primer *dataframe* con todas las filas del segundo para producir un conjunto de datos interno o intermedio conocido como el *producto cartesiano*. El producto cartesiano de grandes conjuntos de datos puede ser enorme, pero normalmente se obtienen subconjuntos de datos declarando el tipo de combinación. Hay dos tipos de combinaciones:
+Conceptualmente, cuando se especifican dos conjuntos de datos, SQL hace coincidir cada fila del primero <!--*dataframe*--> con todas las filas del segundo para producir un conjunto de datos interno o intermedio conocido como el *producto cartesiano*. El producto cartesiano de grandes conjuntos de datos puede ser enorme, pero normalmente se obtienen subconjuntos de datos declarando el tipo de combinación. Hay dos tipos de combinaciones:
 
 * **Las combinaciones internas** devuelven una tabla de resultados para todas las filas de una tabla que tienen una o más filas coincidentes en la otra tabla o tablas.
 
@@ -66,7 +64,7 @@ Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye
 knitr::include_graphics("Image/union_der.png")
 ```
 
-Unión completa
+**Unión completa**
 
 Cuando una unión se especifica como una combinación completa, la tabla de resultados incluye todas las observaciones del producto cartesiano de dos tablas para las cuales la expresión SQL es verdadera, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla. La representación visual de la unión externa completa se muestra en el siguiente diagrama de Venn.
 
@@ -75,42 +73,42 @@ knitr::include_graphics("Image/union_comp.png")
 ```
 
 
-# Cómo unir (fusionar)  conjuntos de datos (internos, externos, izquierdo, derecho) en R
+# Fusión de conjuntos de datos (interna y externa) en R
 
-Se puede combinar dos conjuntos de datos en R usando la función Merge(). Los  conjuntos de datos deben tener los mismos nombres de columna en los que se produce la fusión. La función Merge() en R es similar a la operación de unión de base de datos en SQL. Los diferentes argumentos para Merge() permiten realizar combinaciones naturales, así como combinaciones externas izquierda, derecha y completa. Se puede realizar Unión (Join) en R usando la Función merge().
+Se puede combinar dos conjuntos de datos en R usando la función *Merge()*. Los  conjuntos de datos deben tener los mismos nombres de columna en los que se produce la fusión. La función *Merge()* en R es similar a la operación de unión de tablas en base de datos con SQL. Los diferentes argumentos para *Merge()* permiten realizar combinaciones naturales, así como combinaciones externas izquierda, derecha y completa. <!--Se puede realizar Unión (Join) en R usando la Función *merge()*.-->
 
-Los argumentos de la función merge() en R son:
+Los argumentos de la función *merge()* son:
 
-* "x" : conjunto de datos 1.
+* **"x"** : conjunto de datos 1.
 	
-* "y" : conjunto de datos 2.
+* **"y"** : conjunto de datos 2.
 
-* "by" , "x" , "by.y" : los nombres de las columnas que son comunes a "x"  e "y" . El valor predeterminado es usar las columnas con nombres comunes entre los dos  conjuntos de datos.
+* **"by"** , **"x"** , **"by.y"** : los nombres de las columnas que son comunes a **"x"**  e **"y"** . El valor predeterminado es usar las columnas con nombres comunes entre los dos conjuntos de datos.
 
-* "all,all.x,all.y" : valores lógicos que especifican el tipo de fusión. El valor predeterminado es "all=FALSE"  (lo que significa que solo se devuelven las filas coincidentes).
+* **"all,all.x,all.y"** : valores lógicos que especifican el tipo de fusión. El valor predeterminado es "all=FALSE"  (lo que significa que solo se devuelven las filas coincidentes).
 
-## Entender los diferentes tipos de fusión en R:
+## Cómo definir los argmentos para los diferentes tipos de fusión:
 	
-*Unión (Join) natural: para mantener solo las filas que coinciden con los conjuntos de datos, especifique el argumento "all=FALSE" .
+* ***Unión natural (interna)*** : para mantener solo las filas que coinciden con los conjuntos de datos, especifique el argumento *"all=FALSE"*.
 	
-* Unión (Join) externa completa: para mantener todas las filas de ambos  conjuntos de datos, especifique "all=TRUE" .
+* ***Unión externa completa***: para mantener todas las filas de ambos  conjuntos de datos, especifique *"all=TRUE"* .
 	
-* Unión (Join) externa izquierda: para incluir todas las filas de su conjunto de datos x y solo aquellas de y que coincidan, especifique "all.x=TRUE" .
+* ***Unión externa izquierda***: para incluir todas las filas de su conjunto de datos **"x"** y solo aquellas de **"y"** que coincidan, especifique *"all.x=TRUE"*.
 	
-* Unión (Join) externa derecha: para incluir todas las filas de su  conjunto de datos y y solo las de x que coinciden, especifique "all.y=TRUE" .
+* ***Unión externa derecha***: para incluir todas las filas de su  conjunto de datos **"y"** y solo las de **"x"** que coinciden, especifique *"all.y=TRUE"* .
  
 ### Ejemplos prácticos.
 
 Considerando dos conjuntos de datos
 
-*Data frame 1*
+*Data.frame_1*
 
 ```{r, echo=TRUE, eval= TRUE }
 df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Horno", 3), rep("Televisión", 3)))
 df1
 ```
 
-*Data frame 2*
+*Data.frame_2*
 
 ```{r, echo=TRUE, eval=TRUE}
 df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("California", 2), rep("Texas", 1)))
@@ -177,21 +175,19 @@ El conjunto de datos" df"  resultante será:
 df
 ```
 
-# Cómo unir (fusionar)  conjuntos de datos (internos, externos, izquierdo, derecho) en SAS
+# Fusión de conjuntos de datos (interna y externa) en SAS
 
+<!--## PROC SQL-->
 
+**PROC SQL** implementa el lenguaje de consulta estándar y permite al usuario la unión de *dataset* mediante consultas de combinación.
 
-## PROC SQL JOIN
+Como se ha descripto en el material "*Lenguaje de Consulta Estructurado en SAS y R*", en **PROC SQL** la cláusula *FROM* se utiliza en una expresión de consulta para especificar el/los conjunto(s) de datos fuente, y que se combinan para producir el resultado de la unión.
 
-PROC SQL implementa el lenguaje de consulta estándar y permite al usuario la unión de *dataframe* mediante consultas de combinación.
+Además de los diversos tipos de combinaciones (internas y externas) que se describen, los ejemplos que se incluyen muestran la igualdad entre los valores de columna provenientes de las tablas que se están uniendo; comparación entre valores calculados; etc. La cláusula *WHERE* o la cláusula *ON* contienen las condiciones bajo las cuales algunas filas son guardadas o eliminadas en la tabla de resultados. *WHERE* se usa para seleccionar filas de uniones internas. *ON* se utiliza para seleccionar filas de uniones internas o externas.
 
-Como se ha descripto en el material "*Lenguaje de Consulta Estructurado en SAS y R*", en PROC SQL la cláusula FROM se utiliza en una expresión de consulta para especificar el/los conjunto(s) de datos fuente, y que se combinan para producir el resultado de la unión.
+**Ejemplos**
 
-Además de los diversos tipos de combinaciones (internas y externas) que se describen, los ejemplos que se incluyen muestran la igualdad entre los valores de columna provenientes de las tablas que se están uniendo; comparación entre valores calculados; etc. La cláusula WHERE o la cláusula ON contienen las condiciones bajo las cuales algunas filas son guardadas o eliminadas en la tabla de resultados. WHERE se usa para seleccionar filas de uniones internas. ON se utiliza para seleccionar filas de uniones internas o externas.
-
-Ejemplos
-
-Unión de tablas **interna**
+**Unión interna**
 
 ```{r, echo=TRUE, eval=FALSE}
 proc sql;
@@ -204,7 +200,7 @@ proc sql;
 quit;
 ```
 
-Unión de tablas **externa izquierda**
+**Unión externa izquierda**
 
 
 ```{r, echo=TRUE, eval=FALSE}
@@ -221,7 +217,7 @@ proc sql;
 quit;
 ```
 
-Unión de tablas **externa derecha**
+**Unión externa derecha**
 
 ```{r, echo=TRUE, eval=FALSE}
 proc sql;
@@ -239,8 +235,7 @@ quit;
 
 ```
 
-   Unión de tablas **externa completa**
-
+**Unión externa completa**
 
 ```{r, echo=TRUE, eval=FALSE}
 proc sql;   
