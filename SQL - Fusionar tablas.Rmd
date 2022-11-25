@@ -18,8 +18,8 @@ header-include:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
-                    fig.width=3, 
-                    fig.height=3,
+#                    fig.width=3, 
+#                    fig.height=3,
                     fig.align = "center", 
                     fig.pos="hp")
 ```
@@ -34,13 +34,14 @@ Las formas, que se ha vistos, de ralizar consultas con SQL, es utilizando  una s
 
 Conceptualmente, cuando se especifican dos conjuntos de datos, SQL hace coincidir cada fila del primero <!--*dataframe*--> con todas las filas del segundo para producir un conjunto de datos interno o intermedio conocido como el *producto cartesiano*. El producto cartesiano de grandes conjuntos de datos puede ser enorme, pero normalmente se obtienen subconjuntos de datos declarando el tipo de combinación. Hay dos tipos de combinaciones:
 
-* **Las combinaciones internas** devuelven una tabla de resultados para todas las filas de una tabla que tienen una o más filas coincidentes en la otra tabla o tablas.
+* **Combinación interna**: devuelve una tabla cuyas filas son todas las filas de una tabla que tienen una o más filas coincidentes en la otra tabla. Busca coincidencias entre 2 tablas, en función a una columna que tienen en común. De tal modo que sólo la intersección se mostrará en los resultados. Esta consulta devolverá todos los registros de la tabla de la izquierda que tengan un registro coincidente en la tabla de la derecha.
+.
 
-```{r, echo=FALSE, fig.align='center'}
+```{r, echo=FALSE, fig.width=1, fig.height=1}
 knitr::include_graphics("Image/union_interna.png")
 ```
 
-* **Las combinaciones externas** son combinaciones internas que se aumentan con filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa.
+* **Combinaciones externas** son combinaciones internas que se aumentan con filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_idc.png")
@@ -50,7 +51,11 @@ La tarea central es unir tablas para obtener un detalle sobre la consulta de tab
 
 **Unión izquierda** 
 
-Es un tipo de *unión exterior* en la que la tabla de resultados incluye todas las observaciones de la tabla izquierda, ya sea o no se encuentra una coincidencia para ellos en ninguna de las tablas especificadas a la derecha. Una combinación izquierda entre dos tablas puede ser representada gráficamente como se muestra en el siguiente diagrama de Venn.
+Es un tipo de *unión exterior* en la que la tabla de resultados incluye todas las observaciones de la tabla izquierda, ya sea o no se encuentra una coincidencia para ellos en ninguna de las tablas especificadas a la derecha. 
+
+Esta consulta devolverá todos los registros de la tabla de la izquierda independientemente de si alguno de esos registros tiene una coincidencia en la tabla de la derecha. También devolverá cualquier registro coincidente de la tabla de la derecha.
+
+Una combinación izquierda entre dos tablas puede ser representada gráficamente como se muestra en el siguiente diagrama de Venn.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_izq.png")
@@ -58,7 +63,9 @@ knitr::include_graphics("Image/union_izq.png")
 
 **Unión derecha**
 
-Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellos en cualquiera de las tablas especificadas a la izquierda.
+Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellos en cualquiera de las tablas especificadas a la izquierda. 
+
+Esta consulta devolverá todos los registros de la tabla de la derecha independientementede si alguno de esos registros tiene una coincidencia en la tabla de la izquierda. También devolverá cualquier registro coincidente de la tabla de la izquierda.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_der.png")
@@ -66,10 +73,41 @@ knitr::include_graphics("Image/union_der.png")
 
 **Unión completa**
 
-Cuando una unión se especifica como una combinación completa, la tabla de resultados incluye todas las observaciones del producto cartesiano de dos tablas para las cuales la expresión SQL es verdadera, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla. La representación visual de la unión externa completa se muestra en el siguiente diagrama de Venn.
+Cuando una unión se especifica como una combinación completa, la tabla de resultados incluye todas las observaciones del producto cartesiano de dos tablas para las cuales la expresión SQL es verdadera, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla.
+
+Esta consulta devolverá todos los registros de ambas tablas, uniendo los registros de la tabla de la izquierda que coincidan con los registros de la tabla de la derecha.
+
+La representación visual de la unión externa completa se muestra en el siguiente diagrama de Venn.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_comp.png")
+```
+
+### Otras variantes
+
+**Izquierda Exclución interna**
+
+Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidancon ningún registro de la tabla de la derecha. La representación visual de esta unión se muestra en el siguiente diagrama:
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/exc_izq.png")
+```
+
+
+**Derecha Exclución interna**
+
+Esta consulta devolverá todos los registros de la tabla de la derecha que no coincidan conningún registro de la tabla de la izquierda. La representación visual de esta unión se muestra en el siguiente diagrama:
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/exc_der.png")
+```
+
+**Exterior Exclución interna**
+
+Esta consulta devolverá todos los registros de la tabla de la izquierda y todos los registrosde la tabla de la derecha que no coincidan. La representación visual de esta unión se muestra en el siguiente diagrama:
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/exc_ext.png")
 ```
 
 
@@ -87,7 +125,7 @@ Los argumentos de la función *merge()* son:
 
 * **"all,all.x,all.y"** : valores lógicos que especifican el tipo de fusión. El valor predeterminado es "all=FALSE"  (lo que significa que solo se devuelven las filas coincidentes).
 
-## Cómo definir los argmentos para los diferentes tipos de fusión:
+## Definición de argmentos para los diferentes tipos de fusión:
 	
 * ***Unión natural (interna)*** : para mantener solo las filas que coinciden con los conjuntos de datos, especifique el argumento *"all=FALSE"*.
 	
@@ -96,7 +134,11 @@ Los argumentos de la función *merge()* son:
 * ***Unión externa izquierda***: para incluir todas las filas de su conjunto de datos **"x"** y solo aquellas de **"y"** que coincidan, especifique *"all.x=TRUE"*.
 	
 * ***Unión externa derecha***: para incluir todas las filas de su  conjunto de datos **"y"** y solo las de **"x"** que coinciden, especifique *"all.y=TRUE"* .
- 
+
+```{r, echo=FALSE} 
+knitr::include_graphics("Image/JOIN_R.jpg")
+```
+
 ### Ejemplos prácticos.
 
 Considerando dos conjuntos de datos
