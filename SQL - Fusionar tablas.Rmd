@@ -18,8 +18,8 @@ header-include:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
-#                    fig.width=3, 
-#                    fig.height=3,
+                    fig.width=3, 
+                    fig.height=3,
                     fig.align = "center", 
                     fig.pos="hp")
 ```
@@ -34,8 +34,10 @@ Las formas, que se ha vistos, de ralizar consultas con SQL, es utilizando  una s
 
 Conceptualmente, cuando se especifican dos conjuntos de datos, SQL hace coincidir cada fila del primero <!--*dataframe*--> con todas las filas del segundo para producir un conjunto de datos interno o intermedio conocido como el *producto cartesiano*. El producto cartesiano de grandes conjuntos de datos puede ser enorme, pero normalmente se obtienen subconjuntos de datos declarando el tipo de combinación. Hay dos tipos de combinaciones:
 
-* **Combinación interna**: devuelve una tabla cuyas filas son todas las filas de una tabla que tienen una o más filas coincidentes en la otra tabla. Busca coincidencias entre 2 tablas, en función a una columna que tienen en común. De tal modo que sólo la intersección se mostrará en los resultados. Esta consulta devolverá todos los registros de la tabla de la izquierda que tengan un registro coincidente en la tabla de la derecha.
-.
+* **Combinación interna**: devuelve una tabla cuyas filas son todas las filas de la tabla de la isquierda que tienen una o más filas coincidentes en la tabla de la derecha. Busca coincidencias entre las dos tablas, en función a una columna que tienen en común. De tal modo que sólo la intersección se mostrará en los resultados. 
+
+<!--Esta consulta devolverá todos los registros de la tabla de la izquierda que tengan un registro coincidente en la tabla de la derecha.-->
+
 
 ```{r, echo=FALSE, fig.width=1, fig.height=1}
 knitr::include_graphics("Image/union_interna.png")
@@ -51,11 +53,11 @@ La tarea central es unir tablas para obtener un detalle sobre la consulta de tab
 
 **Unión izquierda** 
 
-Es un tipo de *unión exterior* en la que la tabla de resultados incluye todas las observaciones de la tabla izquierda, ya sea o no se encuentra una coincidencia para ellos en ninguna de las tablas especificadas a la derecha. 
+Es un tipo de *combinación externa* en la que la tabla de resultados incluye todas las observaciones de la tabla izquierda independientemente de que se encuentre una coincidencia en la tabla especificada a la derecha. 
 
-Esta consulta devolverá todos los registros de la tabla de la izquierda independientemente de si alguno de esos registros tiene una coincidencia en la tabla de la derecha. También devolverá cualquier registro coincidente de la tabla de la derecha.
+<!--Esta consulta devolverá todos los registros de la tabla de la izquierda independientemente de si alguno de esos registros tiene una coincidencia en la tabla de la derecha. También devolverá cualquier registro coincidente de la tabla de la derecha.-->
 
-Una combinación izquierda entre dos tablas puede ser representada gráficamente como se muestra en el siguiente diagrama de Venn.
+El siguiente diagrama representa Una combinación izquierda entre dos tablas.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_izq.png")
@@ -63,9 +65,11 @@ knitr::include_graphics("Image/union_izq.png")
 
 **Unión derecha**
 
-Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellos en cualquiera de las tablas especificadas a la izquierda. 
+Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellas en la tabla de la izquierda. 
 
-Esta consulta devolverá todos los registros de la tabla de la derecha independientementede si alguno de esos registros tiene una coincidencia en la tabla de la izquierda. También devolverá cualquier registro coincidente de la tabla de la izquierda.
+<!--Esta consulta devolverá todos los registros de la tabla de la derecha independientementede si alguno de esos registros tiene una coincidencia en la tabla de la izquierda. También devolverá cualquier registro coincidente de la tabla de la izquierda.-->
+
+Una combinación derecha entre dos tablas se puede representar gráficamente como se muestra en el siguiente diagrama.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_der.png")
@@ -73,11 +77,11 @@ knitr::include_graphics("Image/union_der.png")
 
 **Unión completa**
 
-Cuando una unión se especifica como una combinación completa, la tabla de resultados incluye todas las observaciones del producto cartesiano de dos tablas para las cuales la expresión SQL es verdadera, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla.
+En este tipo de unión la tabla resultante incluye todas las observaciones de ambas tablas para las cuales haya coincidencia <!-- la expresión SQL es verdadera-->, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla.
 
-Esta consulta devolverá todos los registros de ambas tablas, uniendo los registros de la tabla de la izquierda que coincidan con los registros de la tabla de la derecha.
+<!--Esta consulta devolverá todos los registros de ambas tablas, uniendo los registros de la tabla de la izquierda que coincidan con los registros de la tabla de la derecha.-->
 
-La representación visual de la unión externa completa se muestra en el siguiente diagrama de Venn.
+La representación visual de la unión externa completa se muestra en el siguiente diagrama.
 
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/union_comp.png")
@@ -85,35 +89,35 @@ knitr::include_graphics("Image/union_comp.png")
 
 ### Otras variantes
 
-**Izquierda Exclución interna**
+**Exclución interna Izquierda **
 
-Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidancon ningún registro de la tabla de la derecha. La representación visual de esta unión se muestra en el siguiente diagrama:
+Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidancon ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
 
-```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("Image/exc_izq.png")
+```{r, echo=FALSE}
+knitr::include_graphics("Image/exc_izq2.jpg")
 ```
 
 
-**Derecha Exclución interna**
+**Exclución interna Derecha**
 
 Esta consulta devolverá todos los registros de la tabla de la derecha que no coincidan conningún registro de la tabla de la izquierda. La representación visual de esta unión se muestra en el siguiente diagrama:
 
-```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("Image/exc_der.png")
+```{r, echo=FALSE}
+knitr::include_graphics("Image/exc_der2.jpg")
 ```
 
-**Exterior Exclución interna**
+**Exclución interna Exterior**
 
-Esta consulta devolverá todos los registros de la tabla de la izquierda y todos los registrosde la tabla de la derecha que no coincidan. La representación visual de esta unión se muestra en el siguiente diagrama:
+Esta consulta devolverá todos los registros de la tabla de la izquierda y todos los registros de la tabla de la derecha que no coincidan. La representación visual de esta unión se muestra en el siguiente diagrama:
 
-```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("Image/exc_ext.png")
+```{r, echo=FALSE}
+knitr::include_graphics("Image/exc_ext2.jpg")
 ```
 
 
 # Fusión de conjuntos de datos (interna y externa) en R
 
-Se puede combinar dos conjuntos de datos en R usando la función *Merge()*. Los  conjuntos de datos deben tener los mismos nombres de columna en los que se produce la fusión. La función *Merge()* en R es similar a la operación de unión de tablas en base de datos con SQL. Los diferentes argumentos para *Merge()* permiten realizar combinaciones naturales, así como combinaciones externas izquierda, derecha y completa. <!--Se puede realizar Unión (Join) en R usando la Función *merge()*.-->
+Se puede combinar dos conjuntos de datos en **R** usando la función *merge()*. Como requiseto, los conjuntos de datos deben tener los mismos nombres en las columna que se utilizan para realizar la unión. La función *merge()* en **R** es similar a la operación de unión de tablas en base de datos con SQL. Los diferentes argumentos para *merge()* permiten realizar combinaciones internas, así como combinaciones externas izquierda, derecha y completa. <!--Se puede realizar Unión (Join) en R usando la Función *merge()*.-->
 
 Los argumentos de la función *merge()* son:
 
@@ -127,13 +131,13 @@ Los argumentos de la función *merge()* son:
 
 ## Definición de argmentos para los diferentes tipos de fusión:
 	
-* ***Unión natural (interna)*** : para mantener solo las filas que coinciden con los conjuntos de datos, especifique el argumento *"all=FALSE"*.
+* ***Unión interna*** : para mantener solo las filas que coinciden con los conjuntos de datos, especifique el argumento *"all=FALSE"*.
 	
-* ***Unión externa completa***: para mantener todas las filas de ambos  conjuntos de datos, especifique *"all=TRUE"* .
+* ***Unión completa***: para mantener todas las filas de ambos  conjuntos de datos, se especifica *"all=TRUE"*.
 	
-* ***Unión externa izquierda***: para incluir todas las filas de su conjunto de datos **"x"** y solo aquellas de **"y"** que coincidan, especifique *"all.x=TRUE"*.
+* ***Unión izquierda***: para incluir todas las filas del  conjunto de datos de la izquierda **"x"** y solo aquellas filas del de la derecha **"y"** que coincidan, se especifica *"all.x=TRUE"*.
 	
-* ***Unión externa derecha***: para incluir todas las filas de su  conjunto de datos **"y"** y solo las de **"x"** que coinciden, especifique *"all.y=TRUE"* .
+* ***Unión derecha***: para incluir todas las filas del conjunto de datos de la derecha **"y"** y solo las filas del de la izquierda **"x"** que coinciden, se especifica *"all.y=TRUE"* .
 
 ```{r, echo=FALSE} 
 knitr::include_graphics("Image/JOIN_R.jpg")
@@ -141,38 +145,61 @@ knitr::include_graphics("Image/JOIN_R.jpg")
 
 ### Ejemplos prácticos.
 
-Considerando dos conjuntos de datos
+Primero se definien dos conjuntos de datos que serán la base para los ejemplos posteriores. Por un lado, la tabla *Empleados* que almacena una lista de empleados y el id del departamento al quepertenecen:
 
-*Data.frame_1*
+**Empleados**
 
-```{r, echo=TRUE, eval= TRUE }
-df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Horno", 3), rep("Televisión", 3)))
+```{r, echo=F, eval= TRUE }
+df1 <- read.csv("Datos/departamentos.csv")
+```
+
+
+```{r, echo=F, eval= TRUE }
 df1
 ```
 
-*Data.frame_2*
+Y por otro lado, la tabla *Departamentos* con la lista de departamentos que existen en la empresa.
 
-```{r, echo=TRUE, eval=TRUE}
-df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("California", 2), rep("Texas", 1)))
+**Departamentos**
+
+```{r, echo=F, eval=TRUE}
+df2 <- read.csv("Datos/empleados.csv")
+```
+
+
+```{r, echo=F, eval=TRUE}
 df2
 ```
 
-**Unión interna**: devuelve solo las filas en las que la tabla izquierda tiene claves coincidentes en la tabla derecha.
+**Unión interna**
+
+Por ejemplo, si se quiere listar los empleados e indicar el nombre del departamento al que pertenecen, se reliza lo siguiente:
+
+<!--devuelve solo las filas en las que la tabla izquierda tiene claves coincidentes en la tabla derecha.-->
 
 ```{r, echo=TRUE, eval=TRUE}
-df <- merge(x = df1, y = df2, by = "CustomerId")
+df <- merge(x = df1, y = df2, by = "departamentoID")
 ```
 
-El conjunto de datos "df" resultante será:
+Con este comando el resultado es:
 
 ```{r, echo= FALSE, eval=TRUE }
 df
 ```
 
-**Unión externa**: devuelve todas las filas de ambas tablas, registros de unión de la izquierda que tienen claves coincidentes en la tabla derecha.
+Y apartir de aquí podemos notar lo siguiente:
+
+El empleado "Williams" no aparece en los resultados, ya que no pertenece a ningún departamento existente.
+
+También hay que tener en cuenta que, en los resultados se ven 3 columnas. Las 2 primeras corresponden a la tabla Empleados y la última a Departamentos.
+
+**Unión completa**: 
+
+
+<!--devuelve todas las filas de ambas tablas, registros de unión de la izquierda que tienen claves coincidentes en la tabla derecha.-->
 
 ```{r, echo=TRUE, eval=TRUE}
-df <- merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+df <- merge(x = df1, y = df2, by = "departamentoID", all = TRUE)
 ```
 
 El conjunto de datos" df"  resultante será:
@@ -181,10 +208,10 @@ El conjunto de datos" df"  resultante será:
 df
 ```
 
-**Unión externa izquierda**: devuelve todas las filas de la tabla izquierda y cualquier fila con teclas coincidentes de la tabla derecha.
+**Unión izquierda**: devuelve todas las filas de la tabla izquierda y cualquier fila con teclas coincidentes de la tabla derecha.
 
 ```{r, echo=TRUE, eval=TRUE}
-df <- merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+df <- merge(x = df1, y = df2, by = "departamentoID", all.x = TRUE)
 ```
 
 El conjunto de datos" df"  resultante será:
@@ -193,13 +220,14 @@ El conjunto de datos" df"  resultante será:
 df
 ```
 
-**Unión externa derecha**: devuelve todas las filas de la tabla derecha y cualquier fila con teclas coincidentes de la tabla izquierda.
+**Unión derecha**: devuelve todas las filas de la tabla derecha y cualquier fila coincidentes de la tabla izquierda. Si no existe ninguna coincidencia para alguna de las filas de la tabla de la izquierda, de igual forma todos los resultados de la primera tabla se muestran.
+
 
 ```{r, echo=TRUE, eval=TRUE}
-df <- merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+df <- merge(x = df1, y = df2, by = "departamentoID", all.y = TRUE)
 ```
 
-El conjunto de datos" df"  resultante será:
+El conjunto de datos resultante será:
 
 ```{r, echo= FALSE, eval=TRUE }
 df
