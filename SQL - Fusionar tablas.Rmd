@@ -22,6 +22,8 @@ knitr::opts_chunk$set(echo = TRUE,
                     fig.height=3,
                     fig.align = "center", 
                     fig.pos="hp")
+library("png")
+library("jpeg")
 ```
 
 
@@ -39,15 +41,24 @@ Conceptualmente, cuando se especifican dos conjuntos de datos, SQL hace coincidi
 <!--Esta consulta devolverá todos los registros de la tabla de la izquierda que tengan un registro coincidente en la tabla de la derecha.-->
 
 
-```{r, echo=FALSE, fig.width=1, fig.height=1}
+```{r, echo=FALSE, fig.cap="Combinación interna", out.width=85}
 knitr::include_graphics("Image/union_interna.png")
 ```
 
+<!--
+![Unión interna](Image/union_interna.png)
+-->
+
+
 * **Combinaciones externas** son combinaciones internas que se aumentan con filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa.
 
-```{r, echo=FALSE, fig.align='center'}
+```{r, echo=FALSE, fig.cap="Combinaciones externas"}
 knitr::include_graphics("Image/union_idc.png")
 ```
+
+<!--
+![Combinaciones externas](Image/union_idc.png)
+-->
 
 La tarea central es unir tablas para obtener un detalle sobre la consulta de tablas individuales.
 
@@ -59,9 +70,13 @@ Es un tipo de *combinación externa* en la que la tabla de resultados incluye to
 
 El siguiente diagrama representa Una combinación izquierda entre dos tablas.
 
-```{r, echo=FALSE, fig.align='center'}
+```{r, echo=FALSE, fig.cap='Combinación externa izquierda', out.width=85}
 knitr::include_graphics("Image/union_izq.png")
 ```
+
+<!--
+![Combinación externa izquierda](Image/union_izq.png)
+-->
 
 **Unión derecha**
 
@@ -71,9 +86,14 @@ Es idéntica a la *unión izquierda*, excepto que la tabla de resultados incluye
 
 Una combinación derecha entre dos tablas se puede representar gráficamente como se muestra en el siguiente diagrama.
 
-```{r, echo=FALSE, fig.align='center'}
+```{r, echo=FALSE, fig.cap='Combinación externa derecha', out.width=85}
 knitr::include_graphics("Image/union_der.png")
 ```
+
+<!--
+![Combinación externa derecha](Image/union_der.png)
+-->
+
 
 **Unión completa**
 
@@ -83,36 +103,43 @@ En este tipo de unión la tabla resultante incluye todas las observaciones de am
 
 La representación visual de la unión externa completa se muestra en el siguiente diagrama.
 
-```{r, echo=FALSE, fig.align='center'}
+```{r, echo=FALSE, fig.cap='Combinación externa completa', out.width=85}
 knitr::include_graphics("Image/union_comp.png")
 ```
 
+
+<!--
+![Combinación externa completa](Image/union_comp.png)
+-->
+
+
 ### Otras variantes
 
-**Exclución interna Izquierda **
+**Exclución interna izquierda **
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidancon ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap='Exclución interna izquierda', out.width=85}
 knitr::include_graphics("Image/exc_izq2.jpg")
 ```
 
 
-**Exclución interna Derecha**
+**Exclución interna derecha**
 
 Esta consulta devolverá todos los registros de la tabla de la derecha que no coincidan conningún registro de la tabla de la izquierda. La representación visual de esta unión se muestra en el siguiente diagrama:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap='Exclución interna derecha', out.width=85}
 knitr::include_graphics("Image/exc_der2.jpg")
 ```
 
-**Exclución interna Exterior**
+**Exclución interna exterior**
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda y todos los registros de la tabla de la derecha que no coincidan. La representación visual de esta unión se muestra en el siguiente diagrama:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.cap='Exclución interna exterior', out.width=85}
 knitr::include_graphics("Image/exc_ext2.jpg")
 ```
+
 
 
 # Fusión de conjuntos de datos (interna y externa) en R
@@ -142,15 +169,18 @@ Los argumentos de la función *merge()* son:
 ```{r, echo=FALSE} 
 knitr::include_graphics("Image/JOIN_R.jpg")
 ```
+<!--
+![Argumentos función merge](Image/JOIN_R.jpg)
+-->
 
 ### Ejemplos prácticos.
 
-Primero se definien dos conjuntos de datos que serán la base para los ejemplos posteriores. Por un lado, la tabla *Empleados* que almacena una lista de empleados y el id del departamento al quepertenecen:
+Primero se definien dos conjuntos de datos que serán la base para los ejemplos posteriores. Por un lado, la tabla *Empleados* que almacena una lista de empleados y el id del departamento al que pertenecen:
 
 **Empleados**
 
 ```{r, echo=F, eval= TRUE }
-df1 <- read.csv("Datos/departamentos.csv")
+df1 <- read.csv("Datos/empleados.csv")
 ```
 
 
@@ -163,7 +193,7 @@ Y por otro lado, la tabla *Departamentos* con la lista de departamentos que exis
 **Departamentos**
 
 ```{r, echo=F, eval=TRUE}
-df2 <- read.csv("Datos/empleados.csv")
+df2 <- read.csv("Datos/departamentos.csv")
 ```
 
 
@@ -173,7 +203,7 @@ df2
 
 **Unión interna**
 
-Por ejemplo, si se quiere listar los empleados e indicar el nombre del departamento al que pertenecen, se reliza lo siguiente:
+En el ejemplo, se quiere listar los empleados e indicar el nombre del departamento al que pertenecen, se reliza lo siguiente:
 
 <!--devuelve solo las filas en las que la tabla izquierda tiene claves coincidentes en la tabla derecha.-->
 
@@ -187,14 +217,15 @@ Con este comando el resultado es:
 df
 ```
 
-Y apartir de aquí podemos notar lo siguiente:
+Y apartir del resultado se puede observar que:
 
 El empleado "Williams" no aparece en los resultados, ya que no pertenece a ningún departamento existente.
 
-También hay que tener en cuenta que, en los resultados se ven 3 columnas. Las 2 primeras corresponden a la tabla Empleados y la última a Departamentos.
+También hay que tener en cuenta que, en el listado resultante se ven 3 columnas, las 2 primeras corresponden a la tabla Empleados y la última a Departamentos.
 
-**Unión completa**: 
+**Unión completa** 
 
+En este ejemplo se encarga de mostrar todas las filas de ambas tablas, sin importar que noexistan coincidencias (usará *NA* como un valor por defecto para dichos casos).
 
 <!--devuelve todas las filas de ambas tablas, registros de unión de la izquierda que tienen claves coincidentes en la tabla derecha.-->
 
@@ -202,38 +233,54 @@ También hay que tener en cuenta que, en los resultados se ven 3 columnas. Las 2
 df <- merge(x = df1, y = df2, by = "departamentoID", all = TRUE)
 ```
 
-El conjunto de datos" df"  resultante será:
+Como resultado muestra la siguiente lista:
 
 ```{r, echo= FALSE, eval=TRUE }
 df
 ```
 
-**Unión izquierda**: devuelve todas las filas de la tabla izquierda y cualquier fila con teclas coincidentes de la tabla derecha.
+Se puede observar al empleado "Williams" a pesar de que no está asignado a ningún departamento, y se muestra el departamento de "Marketing" sin que tenga algun empleado trabajando en él.
+
+
+**Unión izquierda** 
+
+Para este jemplo, la tabla *Empleados* es la primera tabla que aparece en la consulta (df1), por lo tanto es la tabla izquierda, y todas sus filas se mostrarán en los resultados.
+
+La tabla *Departamentos* es la tabla de la derecha (df2) y si se encuentran coincidencias se mostrarán los valores correspondientes, pero sino, aparecerá NA en los resultados.
+
+
+<!--devuelve todas las filas de la tabla izquierda y cualquier fila con teclas coincidentes de la tabla derecha.-->
 
 ```{r, echo=TRUE, eval=TRUE}
 df <- merge(x = df1, y = df2, by = "departamentoID", all.x = TRUE)
 ```
 
-El conjunto de datos" df"  resultante será:
+El resultado es:
 
 ```{r, echo= FALSE, eval=TRUE }
 df
 ```
 
-**Unión derecha**: devuelve todas las filas de la tabla derecha y cualquier fila coincidentes de la tabla izquierda. Si no existe ninguna coincidencia para alguna de las filas de la tabla de la izquierda, de igual forma todos los resultados de la primera tabla se muestran.
+
+**Unión derecha**
+
+Si usamos la siguiente consulta, se muestran todas las filas de la tabla de la derecha. La tabla de la izquierda es *Empleados*, mientras que *Departamentos* es la tabla de la derecha.
+
+<!--: devuelve todas las filas de la tabla derecha y cualquier fila coincidentes de la tabla izquierda. Si no existe ninguna coincidencia para alguna de las filas de la tabla de la izquierda, de igual forma todos los resultados de la primera tabla se muestran.-->
 
 
 ```{r, echo=TRUE, eval=TRUE}
 df <- merge(x = df1, y = df2, by = "departamentoID", all.y = TRUE)
 ```
 
-El conjunto de datos resultante será:
+Entonces el resultado mostrará todos los departamentos al menos una vez. Y si no hay ningún empleado trabajando en un departamento determinado, se mostrará NA. Pero el departamento igual aparecerá.
 
 ```{r, echo= FALSE, eval=TRUE }
 df
 ```
 
-**Combinación cruzada**: una combinación cruzada (también conocida como combinación cartesiana) da como resultado que cada fila de una tabla se una a cada fila de otra tabla.
+
+**Combinación cruzada**: una combinación cruzada, también conocida como combinación cartesiana, da como resultado que cada fila de una tabla se una a cada fila de otra tabla.
 
 ```{r, echo=TRUE, eval=TRUE}
 df<-merge(x = df1, y = df2, by = NULL)
@@ -242,7 +289,7 @@ df<-merge(x = df1, y = df2, by = NULL)
 El conjunto de datos" df"  resultante será:
 
 ```{r, echo= FALSE, eval=TRUE }
-df
+head(df, n=15)
 ```
 
 # Fusión de conjuntos de datos (interna y externa) en SAS
