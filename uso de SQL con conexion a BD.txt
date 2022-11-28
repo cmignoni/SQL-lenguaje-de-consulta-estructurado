@@ -1,0 +1,1 @@
+Los softwares que utilizamos para el analisis de datos (SAS, R, Python) tienen como objetivo la conexión con bases de datos almacenados en algun MSDB en particular para usar SQL. pero en este material el proposito es usar SQL para generar una salida o consulta desde una tabla (dataset o dataframe) o mas tablas.
