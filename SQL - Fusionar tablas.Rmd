@@ -31,17 +31,16 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # Introducción
 
-Hasta el momento se han ralizado consultas **SQL** operando una sola tabla de datos, sin embargo, muchas veces es necesario obtener una consulta cuyas filas tengan datos provenientes de tablas independientes, por ejemplo, obtener las facturas y que en la misma fila de factura aparezca el nombre y dirección del cliente. En este material se estudiarán este tipo de consultas basadas en la combinación o unión (JOIN) de tablas. La unión de tablas consiste en obtener a partir de dos tablas cualesquiera una nueva tabla fusionando las filas de una con las filas de la otra.
+Hasta el momento se han ralizado consultas **SQL** operando una sola tabla de datos, sin embargo, muchas veces es necesario obtener una consulta cuyas filas tengan datos provenientes de tablas independientes, por ejemplo, obtener los empleados y que en la misma fila de empleados aparezca el departamento y dirección la sucursal donde trabaja. En este material se estudiarán este tipo de consultas basadas en la combinación o unión (JOIN) de tablas. La unión de tablas consiste en obtener a partir de dos tablas cualesquiera una nueva tabla fusionando las filas de una con las filas de la otra.
 
-<!--Cuando se especifican varias tablas de consulta en la cláusula *FROM*, **SQL** las procesa para formar una salida. El resultado contiene datos de cada tabla fuente. A estas consultas se las conoce como *combinaciones*.-->
 
-Conceptualmente, cuando se especifican dos conjuntos de datos, **SQL** hace coincidir cada fila del primero con todas las filas del segundo para producir un resultado conocido como *producto cartesiano*. El *producto cartesiano* de grandes conjuntos de datos puede ser muy grande, por lo cual, este tipo de operación no es la que se utiliza más a menudo, lo más apropiado sería obtener una salida que sea un subconjuntos de datos declarando el tipo de combinación. 
+Conceptualmente, cuando se especifican dos conjuntos de datos, **SQL** hace coincidir cada fila del primero con todas las filas del segundo para producir un resultado conocido como *producto cartesiano*. El *producto cartesiano* de grandes conjuntos de datos puede ser excesivamente grande, por lo cual, este tipo de operación no es la que se utiliza más a menudo, lo más apropiado sería obtener una salida que sea un subconjuntos de datos declarando el tipo de combinación. 
 
 # Combinación de tablas
 
 ## Combinación interna
 
-La *Combinación interna* devuelve una salida con todas las filas de la tabla de la isquierda que tienen una o más filas coincidentes en la tabla de la derecha. Busca coincidencias entre las dos tablas, en función a una columna que tienen en común. De tal modo que en el resultado sólo se mostrará la intersección. 
+La *Combinación interna* devuelve como salida a todas las filas de la tabla de la isquierda que tienen una o más filas coincidentes en la tabla de la derecha. Realiza la busqueda de coincidencias entre las dos tablas en función a una columna que tienen en común. De tal modo que en el resultado sólo se mostrará la intersección. 
 
 
 ```{r, echo=FALSE, out.width=85}
@@ -51,7 +50,7 @@ knitr::include_graphics("Image/union_interna.png")
 
 ## Combinaciones externas
 
-Las **Combinaciones externas** son combinaciones internas que se incrementan con las filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa. La tarea central es unir tablas para obtener un detalle sobre la consulta de tablas individuales.
+Las **Combinaciones externas** son combinaciones internas que se incrementan con las filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa. <!--La tarea central es unir tablas para obtener un detalle sobre la consulta de tablas individuales.-->
 
 ```{r, echo=FALSE}
 #```{r, echo=FALSE, fig.cap="Combinaciones externas"}
@@ -64,7 +63,7 @@ knitr::include_graphics("Image/union_idc_2.png")
 
 ### Combinación izquierda
 
-Comunmente llamada *LEFT JOIN* en **SQL** (*Unión izquierda*), es un tipo de *combinación externa* en la que la salida resultante incluye todas las observaciones de la tabla izquierda independientemente de que se encuentre una coincidencia en la tabla especificada a la derecha. Esta combinación se representa en el siguiente diagrama.
+Comunmente llamada *LEFT JOIN* en **SQL** (*Unión izquierda*), es un tipo de *combinación externa* en la que la salida resultante incluye todas las observaciones de la tabla izquierda, independientemente de que se encuentre una coincidencia en la tabla especificada a la derecha. Esta combinación se representa en el siguiente diagrama.
 
 ```{r, echo=FALSE, out.width=85}
 #```{r, echo=FALSE, fig.cap='Combinación izquierda', out.width=85}
@@ -105,7 +104,7 @@ knitr::include_graphics("Image/union_comp.png")
 
 ### Exclución interna izquierda
 
-Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidancon ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
+Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidan con ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
 
 ```{r, echo=FALSE, out.width=85}
 #```{r, echo=FALSE, fig.cap='Exclución interna izquierda', out.width=85}
@@ -135,13 +134,12 @@ knitr::include_graphics("Image/exc_ext2.jpg")
 
 ### Función *merge()*
 
-Se puede combinar dos dataframe (conjunto de datos) en **R** usando la función *merge()*. Como requisito, los conjuntos de datos deben tener los mismos nombres en las columna que se utilizan para realizar la unión. La función *merge()* en **R** es similar a la operación de unión de tablas con **SQL**. Los diferentes argumentos para *merge()* permiten realizar combinaciones internas, así como las combinaciones externas izquierda, derecha y completa. <!--Se puede realizar Unión (Join) en R usando la Función *merge()*.-->
+En **R**, se pueden combinar dos dataframe (conjunto de datos)  usando la función *merge()*. Como requisito, los conjuntos de datos deben tener los mismos nombres en las columnas que se utilizan para realizar la unión. La función *merge()* en **R** es similar a la operación de unión de tablas con **SQL**. Los diferentes argumentos para *merge()* permiten realizar combinaciones internas, así como las combinaciones externas izquierda, derecha y completa. <!--Se puede realizar Unión (Join) en R usando la Función *merge()*.-->
 
-#### Argumentos 
-
-<!-- de la función *merge()* -->
+### Argumentos
 
 Los argumentos de la función *merge()* son:
+
 
 * **"x"** : dataframe_1.
 	
@@ -227,7 +225,6 @@ En este ejemplo se encarga de mostrar todas las filas de ambas tablas, sin impor
 df <- merge(x = df1, y = df2, by = "departamentoID", all = TRUE)
 ```
 
-***
 
 Como resultado muestra la siguiente lista:
 
@@ -273,11 +270,10 @@ Entonces el resultado mostrará todos los departamentos al menos una vez. Y si n
 df
 ```
 
-***
 
 **Combinación cruzada**
 
-También conocida como combinación cartesiana, da como resultado que cada fila de una tabla se una a cada fila de otra tabla.
+También conocida como *CROSS JOIN* en **SQL** (*producto cartesiano*), da como resultado que cada fila de una tabla se una a cada fila de otra tabla.
 
 ```{r, echo=TRUE, eval=TRUE}
 df<-merge(x = df1, y = df2, by = NULL)
@@ -289,11 +285,11 @@ El conjunto de datos resultante será:
 head(df, n=15)
 ```
 
-*****
+- - -
 
-*Nota: Se puede realizar una selección de variables utilizando la función __sqldf()__ una vez que se ha obtenido el conjunto de datos como resultado de la union de dos o mas tablas.*
+*Nota: Se puede realizar una selección de variables utilizando la función __sqldf()__ una vez que se ha obtenido el conjunto de datos resultante de la union de dos o mas tablas.*
 
-*****
+* * *
 <!--
 ## Unir más de dos data frames en R
 
