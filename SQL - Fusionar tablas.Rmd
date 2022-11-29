@@ -6,10 +6,10 @@ author: "César Mignoni"
 fontsize: 12pt
 geometry: a4paper, margin=2cm
 # geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
-#documentclass: article
+documentclass: article
 output: pdf_document
 df_print: paged
-#fig_caption: yes
+fig_caption: yes
 keep_tex: yes
 header-include:
   -/usepackage[spanish]{babel}
@@ -31,10 +31,11 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # Introducción
 
-Hasta el momento, las formas ralizar consultas que se han vistos utilizando SQL, es con una sola tabla.
-<!--Se han visto formas de consultar con SQL utilizando  una sola tabla.--> Sin embargo, a menudo es necesario obtener datos de tablas independientes. Cuando se especifican varias tablas de consulta en la cláusula *FROM*, **SQL** las procesa para formar una salida. El resultado contiene datos de cada tabla fuente. A estas consultas se las conoce como *combinaciones*.
+Hasta el momento se han ralizado consultas **SQL** operando una sola tabla de datos, sin embargo, muchas veces es necesario obtener una consulta cuyas filas tengan datos provenientes de tablas independientes, por ejemplo, obtener las facturas y que en la misma fila de factura aparezca el nombre y dirección del cliente. En este material se estudiarán este tipo de consultas basadas en la combinación o unión (JOIN) de tablas. La unión de tablas consiste en obtener a partir de dos tablas cualesquiera una nueva tabla fusionando las filas de una con las filas de la otra.
 
-Conceptualmente, cuando se especifican dos conjuntos de datos, **SQL** hace coincidir cada fila del primero con todas las filas del segundo para producir un resultado conocido como *producto cartesiano*. El *producto cartesiano* de enormes conjuntos de datos puede ser muy grande, por lo cual, es mas apropiado obtener un resultado que sea un subconjuntos de datos declarando el tipo de combinación. 
+<!--Cuando se especifican varias tablas de consulta en la cláusula *FROM*, **SQL** las procesa para formar una salida. El resultado contiene datos de cada tabla fuente. A estas consultas se las conoce como *combinaciones*.-->
+
+Conceptualmente, cuando se especifican dos conjuntos de datos, **SQL** hace coincidir cada fila del primero con todas las filas del segundo para producir un resultado conocido como *producto cartesiano*. El *producto cartesiano* de grandes conjuntos de datos puede ser muy grande, por lo cual, este tipo de operación no es la que se utiliza más a menudo, lo más apropiado sería obtener una salida que sea un subconjuntos de datos declarando el tipo de combinación. 
 
 # Combinación de tablas
 
@@ -43,19 +44,17 @@ Conceptualmente, cuando se especifican dos conjuntos de datos, **SQL** hace coin
 La *Combinación interna* devuelve una salida con todas las filas de la tabla de la isquierda que tienen una o más filas coincidentes en la tabla de la derecha. Busca coincidencias entre las dos tablas, en función a una columna que tienen en común. De tal modo que en el resultado sólo se mostrará la intersección. 
 
 
-```{r, echo=FALSE, fig.cap="Combinación interna", out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap="Combinación interna", out.width=85}
 knitr::include_graphics("Image/union_interna.png")
 ```
-
-
-
 
 ## Combinaciones externas
 
 Las **Combinaciones externas** son combinaciones internas que se incrementan con las filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa. La tarea central es unir tablas para obtener un detalle sobre la consulta de tablas individuales.
 
-
-```{r, echo=FALSE, fig.cap="Combinaciones externas"}
+```{r, echo=FALSE}
+#```{r, echo=FALSE, fig.cap="Combinaciones externas"}
 knitr::include_graphics("Image/union_idc_2.png")
 ```
 
@@ -63,13 +62,12 @@ knitr::include_graphics("Image/union_idc_2.png")
 ![Combinaciones externas](Image/union_idc.png)
 -->
 
-
 ### Combinación izquierda
-
 
 Comunmente llamada *LEFT JOIN* en **SQL** (*Unión izquierda*), es un tipo de *combinación externa* en la que la salida resultante incluye todas las observaciones de la tabla izquierda independientemente de que se encuentre una coincidencia en la tabla especificada a la derecha. Esta combinación se representa en el siguiente diagrama.
 
-```{r, echo=FALSE, fig.cap='Combinación izquierda', out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap='Combinación izquierda', out.width=85}
 knitr::include_graphics("Image/union_izq.png")
 ```
 
@@ -81,7 +79,8 @@ knitr::include_graphics("Image/union_izq.png")
 
 Se la conoce como *RIGHT JOIN* en **SQL** (*unión derecha*). Es idéntica a la *unión izquierda*, excepto que el resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellas en la tabla de la izquierda. Una combinación derecha entre dos tablas se puede representar gráficamente como se muestra en el siguiente diagrama.
 
-```{r, echo=FALSE, fig.cap='Combinación derecha', out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap='Combinación derecha', out.width=85}
 knitr::include_graphics("Image/union_der.png")
 ```
 
@@ -93,38 +92,41 @@ knitr::include_graphics("Image/union_der.png")
 
 Esta combinación es conocida como *Full (outer) Join* en **SQL** (*Unión completa*). En este tipo de unión la consulta resultante incluye todas las observaciones de ambas tablas para las cuales haya coincidencia, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla. La representación visual de la unión completa se muestra en el siguiente diagrama.
 
-
-```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
 knitr::include_graphics("Image/union_comp.png")
 ```
 
-
-
+<!--
+![Combinación completa](Image/union_comp.png)
+-->
 
 ## Otras variantes
 
-### **Exclución interna izquierda **
+### Exclución interna izquierda
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidancon ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
 
-```{r, echo=FALSE, fig.cap='Exclución interna izquierda', out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap='Exclución interna izquierda', out.width=85}
 knitr::include_graphics("Image/exc_izq2.jpg")
 ```
 
-
-### **Exclución interna derecha**
+### Exclución interna derecha
 
 Esta consulta devolverá todos los registros de la tabla de la derecha que no coincidan conningún registro de la tabla de la izquierda. La representación visual de esta unión se muestra en el siguiente diagrama:
 
-```{r, echo=FALSE, fig.cap='Exclución interna derecha', out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap='Exclución interna derecha', out.width=85}
 knitr::include_graphics("Image/exc_der2.jpg")
 ```
 
-### **Exclución interna exterior**
+### Exclución interna exterior
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda y todos los registros de la tabla de la derecha que no coincidan. La representación visual de esta unión se muestra en el siguiente diagrama:
 
-```{r, echo=FALSE, fig.cap='Exclución interna exterior', out.width=85}
+```{r, echo=FALSE, out.width=85}
+#```{r, echo=FALSE, fig.cap='Exclución interna exterior', out.width=85}
 knitr::include_graphics("Image/exc_ext2.jpg")
 ```
 
@@ -159,7 +161,7 @@ Los argumentos de la función *merge()* son:
 	
 * ***Unión derecha***: para incluir todas las filas del conjunto de datos de la derecha **"y"** y solo las filas del de la izquierda **"x"** que coinciden, se especifica *"all.y=TRUE"* .
 
-```{r, echo=FALSE} 
+```{r, echo=FALSE, fig.cap="Argumentos función merge", fig.align='center'} 
 knitr::include_graphics("Image/JOIN_R.jpg")
 ```
 
