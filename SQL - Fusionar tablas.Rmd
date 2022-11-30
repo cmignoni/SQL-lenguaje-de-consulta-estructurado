@@ -336,15 +336,14 @@ Reduce(function(x, y) merge(x, y), list(x, y, z))
 
 -->
 
-# Fusión de conjuntos de datos (interna y externa) en SAS
+# Unión interna y externa de dataset en SAS
 
 <!--## PROC SQL-->
 
-**PROC SQL** implementa el lenguaje de consulta estándar y permite al usuario la unión de *dataset* mediante consultas de combinación.
+El procedimiento *PROC SQL* implementa el lenguaje de consulta estructurado estándar en **SAS** y también permite al usuario la unión de *dataset* mediante consultas de combinación. En el procedimiento *PROC SQL* la cláusula *FROM* se utiliza en una expresión de consulta para especificar el/los conjunto(s) de datos fuente, y que se combinan para producir el resultado de la unión. La cláusula *WHERE* o la cláusula *ON* contienen las condiciones bajo las cuales algunas filas son consideradas o desestimadas del resultado. *WHERE* se usa para seleccionar filas de uniones internas. *ON* se utiliza para seleccionar filas de uniones internas o externas.
 
-Como se ha descripto en el material "*Lenguaje de Consulta Estructurado en SAS y R*", en **PROC SQL** la cláusula *FROM* se utiliza en una expresión de consulta para especificar el/los conjunto(s) de datos fuente, y que se combinan para producir el resultado de la unión.
 
-Además de los diversos tipos de combinaciones (internas y externas) que se describen, los ejemplos que se incluyen muestran la igualdad entre los valores de columna provenientes de las tablas que se están uniendo; comparación entre valores calculados; etc. La cláusula *WHERE* o la cláusula *ON* contienen las condiciones bajo las cuales algunas filas son guardadas o eliminadas en la tabla de resultados. *WHERE* se usa para seleccionar filas de uniones internas. *ON* se utiliza para seleccionar filas de uniones internas o externas.
+Además de los diversos tipos de combinaciones (internas y externas) que se describen, los ejemplos que se incluyen muestran la igualdad entre los valores de columna provenientes de las tablas que se están uniendo; comparación entre valores calculados; etc. 
 
 **Ejemplos**
 
