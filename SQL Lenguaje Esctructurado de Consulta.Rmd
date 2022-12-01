@@ -1,6 +1,6 @@
 ---
-title: "SQL - Lenguaje Estructurado de Consultas"
-subtitle: "en R y SAS"
+title: "SQL - Lenguaje de Consulta Estructurado"
+#subtitle: "Lenguaje de Consulta estándar en R y en SAS"
 author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 fontsize: 12pt
@@ -25,8 +25,9 @@ knitr::opts_chunk$set(echo = TRUE,
 library(sqldf)
 ```
 
+# Lenguaje de Consulta estándar en R y en SAS
 
-# Introducción
+## Introducción
 
 El lenguaje estructurado de consultas __SQL__ (*Structured Query Language*) surge como un leguaje para realizar consultas en bases de datos relacional, modelo definido por el Dr. Edgar F. Codd de IBM en la década de los 70´, luego fue incorporado por muchos lenguajes de programación como una herramienta que permite realizar consultas y obtener conjuntos de datos de una manera rápida con una sintaxis sencilla. Actualmente, se lo puede utilizar en __SAS__ mediante el procedimiento _Proc sql_ y en __R__ con varios paquetes, uno de ellos _sqldf_.
 
