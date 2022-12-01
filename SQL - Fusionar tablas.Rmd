@@ -1,10 +1,9 @@
 ---
-title: "SQL - Unión de conjuntos de datos"
-subtitle: "en R y SAS"
+title: "SQL - Lenguaje de Consulta Estructurado"
+#subtitle: "Unión de conjuntos de datos en R y en SAS"
 author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
-fontsize: 12pt
-geometry: a4paper, margin=2cm
+fontsize: 12pt 
 # geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
 documentclass: article
 output: pdf_document
@@ -27,18 +26,18 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-<!--# SQL – Unión de tablas-->
+# Unión de conjuntos de datos en R y en SAS
 
-# Introducción
+## Introducción
 
 Hasta el momento se han ralizado consultas **SQL** operando una sola tabla de datos, sin embargo, muchas veces es necesario obtener una consulta cuyas filas tengan datos provenientes de tablas independientes, por ejemplo, obtener los empleados y que en la misma fila de empleados aparezca el departamento y dirección la sucursal donde trabaja. En este material se estudiarán este tipo de consultas basadas en la combinación o unión (JOIN) de tablas. La unión de tablas consiste en obtener a partir de dos tablas cualesquiera una nueva tabla fusionando las filas de una con las filas de la otra.
 
 
 Conceptualmente, cuando se especifican dos conjuntos de datos, **SQL** hace coincidir cada fila del primero con todas las filas del segundo para producir un resultado conocido como *producto cartesiano*. El *producto cartesiano* de grandes conjuntos de datos puede ser excesivamente grande, por lo cual, este tipo de operación no es la que se utiliza más a menudo, lo más apropiado sería obtener una salida que sea un subconjuntos de datos declarando el tipo de combinación. 
 
-# Combinación de tablas
+## Combinación de tablas
 
-## Combinación interna
+### Combinación interna
 
 La *Combinación interna* devuelve como salida a todas las filas de la tabla de la isquierda que tienen una o más filas coincidentes en la tabla de la derecha. Realiza la busqueda de coincidencias entre las dos tablas en función a una columna que tienen en común. De tal modo que en el resultado sólo se mostrará la intersección. 
 
@@ -48,7 +47,7 @@ La *Combinación interna* devuelve como salida a todas las filas de la tabla de 
 knitr::include_graphics("Image/union_interna.png")
 ```
 
-## Combinaciones externas
+### Combinaciones externas
 
 Las **Combinaciones externas** son combinaciones internas que se incrementan con las filas que no coinciden con ninguna fila de la otra tabla en la combinación. Hay tres tipos de combinaciones externas: izquierda, derecha y completa. <!--La tarea central es unir tablas para obtener un detalle sobre la consulta de tablas individuales.-->
 
@@ -61,7 +60,7 @@ knitr::include_graphics("Image/union_idc_2.png")
 ![Combinaciones externas](Image/union_idc.png)
 -->
 
-### Combinación izquierda
+#### Combinación izquierda
 
 Comunmente llamada *LEFT JOIN* en **SQL** (*Unión izquierda*), es un tipo de *combinación externa* en la que la salida resultante incluye todas las observaciones de la tabla izquierda, independientemente de que se encuentre una coincidencia en la tabla especificada a la derecha. Esta combinación se representa en el siguiente diagrama.
 
@@ -74,7 +73,7 @@ knitr::include_graphics("Image/union_izq.png")
 ![Combinación externa izquierda](Image/union_izq.png)
 -->
 
-### Combinación derecha
+#### Combinación derecha
 
 Se la conoce como *RIGHT JOIN* en **SQL** (*unión derecha*). Es idéntica a la *unión izquierda*, excepto que el resultados incluye todas las observaciones de la tabla derecha, si se encuentra o no una coincidencia para ellas en la tabla de la izquierda. Una combinación derecha entre dos tablas se puede representar gráficamente como se muestra en el siguiente diagrama.
 
@@ -87,7 +86,7 @@ knitr::include_graphics("Image/union_der.png")
 ![Combinación externa derecha](Image/union_der.png)
 -->
 
-### Combinacion completa
+#### Combinacion completa
 
 Esta combinación es conocida como *Full (outer) Join* en **SQL** (*Unión completa*). En este tipo de unión la consulta resultante incluye todas las observaciones de ambas tablas para las cuales haya coincidencia, más las filas de cada tabla que no coinciden con ninguna fila en la otra tabla. La representación visual de la unión completa se muestra en el siguiente diagrama.
 
@@ -100,9 +99,12 @@ knitr::include_graphics("Image/union_comp.png")
 ![Combinación completa](Image/union_comp.png)
 -->
 
-## Otras variantes
+### Otras variantes
 
-### Exclución interna izquierda
+
+#### Exclución interna 
+
+**Exclución interna Izquierda**
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidan con ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
 
@@ -111,7 +113,7 @@ Esta consulta devolverá todos los registros de la tabla de la izquierda que no 
 knitr::include_graphics("Image/exc_izq2.jpg")
 ```
 
-### Exclución interna derecha
+**Exclución interna derecha**
 
 Esta consulta devolverá todos los registros de la tabla de la derecha que no coincidan conningún registro de la tabla de la izquierda. La representación visual de esta unión se muestra en el siguiente diagrama:
 
@@ -120,7 +122,7 @@ Esta consulta devolverá todos los registros de la tabla de la derecha que no co
 knitr::include_graphics("Image/exc_der2.jpg")
 ```
 
-### Exclución interna exterior
+**Exclución interna exterior**
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda y todos los registros de la tabla de la derecha que no coincidan. La representación visual de esta unión se muestra en el siguiente diagrama:
 
@@ -130,13 +132,13 @@ knitr::include_graphics("Image/exc_ext2.jpg")
 ```
 
 
-## Unión interna y externa de dataframe en R
+# Unión interna y externa de dataframe en R
 
-### Función *merge()*
+## Función *merge()*
 
 En **R**, se pueden combinar dos dataframe (conjunto de datos)  usando la función *merge()*. Como requisito, los conjuntos de datos deben tener los mismos nombres en las columnas que se utilizan para realizar la unión. La función *merge()* en **R** es similar a la operación de unión de tablas con **SQL**. Los diferentes argumentos para *merge()* permiten realizar combinaciones internas, así como las combinaciones externas izquierda, derecha y completa. <!--Se puede realizar Unión (Join) en R usando la Función *merge()*.-->
 
-### Argumentos
+## Argumentos
 
 Los argumentos de la función *merge()* son:
 
@@ -167,7 +169,7 @@ knitr::include_graphics("Image/JOIN_R.jpg")
 ![Argumentos función merge](Image/JOIN_R.jpg)
 -->
 
-### Ejemplos prácticos.
+## Ejemplos prácticos.
 
 Primero se definien dos conjuntos de datos que serán la base para los ejemplos posteriores. Por un lado, la tabla *Empleados* que almacena una lista de empleados y el id del departamento al que pertenecen:
 
@@ -237,7 +239,7 @@ Se puede observar al empleado "Williams" a pesar de que no está asignado a ning
 
 **Unión izquierda** 
 
-Para este jemplo, la tabla *Empleados* es la primera tabla que aparece en la consulta (df1), por lo tanto es la tabla izquierda, y todas sus filas se mostrarán en los resultados.
+Para este ejemplo, la tabla *Empleados* es la primera tabla que aparece en la consulta (df1), por lo tanto es la tabla izquierda, y todas sus filas se mostrarán en los resultados.
 
 La tabla *Departamentos* es la tabla de la derecha (df2) y si se encuentran coincidencias se mostrarán los valores correspondientes, pero sino, aparecerá NA en los resultados.
 
@@ -338,33 +340,62 @@ Reduce(function(x, y) merge(x, y), list(x, y, z))
 
 # Unión interna y externa de dataset en SAS
 
-<!--## PROC SQL-->
+## Procedimiento PROC SQL
+
 
 El procedimiento *PROC SQL* implementa el lenguaje de consulta estructurado estándar en **SAS** y también permite al usuario la unión de *dataset* mediante consultas de combinación. En el procedimiento *PROC SQL* la cláusula *FROM* se utiliza en una expresión de consulta para especificar el/los conjunto(s) de datos fuente, y que se combinan para producir el resultado de la unión. La cláusula *WHERE* o la cláusula *ON* contienen las condiciones bajo las cuales algunas filas son consideradas o desestimadas del resultado. *WHERE* se usa para seleccionar filas de uniones internas. *ON* se utiliza para seleccionar filas de uniones internas o externas.
 
 
-Además de los diversos tipos de combinaciones (internas y externas) que se describen, los ejemplos que se incluyen muestran la igualdad entre los valores de columna provenientes de las tablas que se están uniendo; comparación entre valores calculados; etc. 
+## Ejemplos prácticos
 
-**Ejemplos**
+
 
 **Unión interna**
 
 ```{r, echo=TRUE, eval=FALSE}
-proc sql;
-   title 'Oil Production/Reserves of Countries';
-   select p.country, barrelsperday 'Production', 
-          barrels 'Reserves'
-      from oilprod p, oilrsrvs r
-      where p.country = r.country
-      order by barrelsperday desc;
+Proc sql;
+  title "Empleados por Departamento";
+  SELECT * 
+  FROM datos.Empleados E, 
+       Datos.Departamentos D
+       WHERE E.DepartamentoId = D.DepartamentoId
+  ORDER BY E.nombre desc;
 quit;
 ```
 
-**Unión externa izquierda**
+```{r, echo=FALSE}
+#```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
+knitr::include_graphics("Image/Inner Join SAS.png")
+```
+
+<!--
+![ ](Image/Inner Join SAS.png)
+-->
+
+
+**Unión izquierda**
 
 
 ```{r, echo=TRUE, eval=FALSE}
 proc sql;
+    SELECT *
+    FROM datos.Empleados E LEFT JOIN 
+         Datos.Departamentos D
+         ON E.DepartamentoId = D.DepartamentoId
+    ORDER BY E.nombre;
+quit;
+```
+
+```{r, echo=FALSE}
+#```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
+knitr::include_graphics("Image/LEFT JOIN SAS.png")
+```
+
+<!--
+![ ](Image/LEFT JOIN SAS.png)
+-->
+
+<!--
    title 'Coordinates of Capital Cities';
    select Capital format=$20., 
           Name 'Country' format=$20., 
@@ -374,13 +405,32 @@ proc sql;
            on a.Capital = b.City and
               a.Name = b.Country
       order by Capital;
-quit;
-```
+-->
 
-**Unión externa derecha**
+**Unión derecha**
 
 ```{r, echo=TRUE, eval=FALSE}
 proc sql;
+SELECT *
+    FROM datos.Empleados as E RIGHT JOIN 
+         Datos.Departamentos as D
+         ON E.DepartamentoId = D.DepartamentoId
+    ORDER BY D.nombre;
+quit;
+```
+
+```{r, echo=FALSE}
+#```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
+knitr::include_graphics("Image/RIGHT JOIN SAS.png")
+```
+
+
+<!--
+![ ](Image/RIGHT JOIN SAS.png)
+-->
+
+
+<!--
    title 'Populations of Capitals Only';
    select City format=$20., 
           Country 'Country' format=$20., 
@@ -390,15 +440,29 @@ proc sql;
            on Capital = City and
               Name = Country
       order by City;
-quit;
+-->
 
-
-```
-
-**Unión externa completa**
+**Unión completa**
 
 ```{r, echo=TRUE, eval=FALSE}
 proc sql;   
+  SELECT *
+  FROM datos.Empleados as E FULL JOIN 
+       Datos.Departamentos as D
+       ON E.DepartamentoId = D.DepartamentoId;
+quit;
+```
+
+```{r, echo=FALSE}
+#```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
+knitr::include_graphics("Image/FULL JOIN SAS.png")
+```
+
+<!--
+![ ](Image/FULL JOIN SAS.png)
+-->
+
+<!--
    title 'Populations/Coordinates of World Cities';
    select City '#City#(WORLDCITYCOORDS)' format=$20.,
           Capital '#Capital#(COUNTRIES)' format=$20.,
@@ -407,11 +471,6 @@ proc sql;
            worldcitycoords
            on Capital = City and
               Name = Country; 
-quit;
-```
+-->
 
-Borrar los títulos
-
-```{r, echo=TRUE, eval=FALSE}
-title;
-```
+Para todos los ejemplo vistos hasta aquí en **SAS**, si la intesión es crear un dataset con el resultado de la consulta en particular, basta con agregar la linea de comando: *create table ... as;* antes de de la sentencia *SELECT*.
