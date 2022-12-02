@@ -29,7 +29,7 @@ library(sqldf)
 
 ## Introducción
 
-El lenguaje estructurado de consultas __SQL__ (*Structured Query Language*) surge como un leguaje para realizar consultas en bases de datos relacional, modelo definido por el Dr. Edgar F. Codd de IBM en la década de los 70´, luego fue incorporado por muchos lenguajes de programación como una herramienta que permite realizar consultas y obtener conjuntos de datos de una manera rápida con una sintaxis sencilla. Actualmente, se lo puede utilizar en __SAS__ mediante el procedimiento _Proc sql_ y en __R__ con varios paquetes, uno de ellos _sqldf_.
+El lenguaje de consulta estructurado __SQL__ (*Structured Query Language*) surge como un leguaje para realizar consultas en bases de datos relacional, modelo definido por el Dr. Edgar F. Codd de IBM en la década de los 70´, luego fue incorporado por muchos lenguajes de programación como una herramienta que permite realizar consultas y obtener conjuntos de datos de una manera rápida con una sintaxis sencilla. Actualmente, se lo puede utilizar en __SAS__ mediante el procedimiento _Proc sql_ y en __R__ con varios paquetes, uno de ellos _sqldf_.
 
 Es un lenguaje declarativo en el que las órdenes especifican cual debe ser el resultado y no la manera de conseguirlo, como ocurre en los lenguajes imperativos o procedimentales. Al ser declarativo, su aprendizaje es muy sencillo debido a que permiten escribir las órdenes, utilizando palabras clave (en inglés), como si fueran frases en las que se especifica que es lo que se quiere obtener. Por ejemplo:  
 
@@ -39,7 +39,7 @@ Es un lenguaje declarativo en el que las órdenes especifican cual debe ser el r
 
 La sentencia anterior devuelve el nombre de aquellos empleados que pertenecen al departamento producción (*prod*) y los presenta ordenados por nombre.
 
-Los comandos que contiene el _Lenguaje Estructurado de Consultas (SQL)_ permiten realizar diversos tipos de tareas:
+Los comandos que contiene el _Lenguaje de Consulta Estructurado (SQL)_ permiten realizar diversos tipos de tareas:
 
 * Comandos para la **definición y creación** de un conjunto de datos (create table).
 
@@ -310,13 +310,14 @@ La sintaxis de la cláusula WHERE admite más de una condición de selección pa
     quit;
 ```
 
+<!--
 \begin{tabular}{|l|}
 \hline
 \\
-Nota: No hay límite para la cantidad de condiciones que puede tener la cláusula WHERE. \\
-\\ 
 \hline
 \end{tabular}
+-->
+*Nota*: No hay límite para la cantidad de condiciones que puede tener la cláusula WHERE. 
 
 Existe una diferencia de cómo *SAS* maneja los tipos de datos cuando no coincidentes en las cláusulas *WHERE* y otras partes del lenguaje. Esto se puede ver cuando se utiliza *WHERE* en *PROC SQL* o en un paso *DATA* u otro procedimiento. En la mayoría de los casos SAS realiza una conversión del tipo de dato en forma automática, de carácter a numérico o viceversa, para que la comparación tenga válidez y no presente un error. En siguiente ejemplo de código *SAS*, suponiendo que la variable "TPO" (Tiempo demora) es de tipo numérica, el paso *DATA* se ejecutará presentando una nota aclaratoria, pero la consulta SQL no:
 
@@ -346,7 +347,8 @@ En el paso *DATA* la instrucción *IF* realiza una conversión automática de '2
 En una consulta SQL la cláusula *WHERE* requiere que el tipo de datos sea compatible, por tal motivo genera un error y no se ejecuta:
 
 ```{r, echo=TRUE,  eval=FALSE}
-  ERROR: Expression using greater than (>) has components that are of different data types.
+ERROR: Expression using greater than (>) has components that are of different
+data types.
 ```
 
 El requisito de compatibilidad de datos de la cláusula *WHERE* es válido si se usa en una consulta *SQL*, paso *DATA* u otro procedimiento. Los mensajes de error escritos en la ventana Log pueden ser diferentes. Por ejemplo, al ejecutar el paso *DATA* anterior con una instrucción *WHERE* en lugar de una instrucción *IF* se genera un mensaje de error ligeramente diferente y el paso *DATA* no se ejecuta:
@@ -377,14 +379,14 @@ Es posible usar los operadores *IS NULL* o *IS MISSING* para que devuelvan las f
     quit;
 ```
 
+<!--
 \begin{tabular}{|l|}
 \hline
-\\
-Nota: IS MISSING es una extensión específica de SAS para SQL.\\
-\\
 \hline
 \end{tabular}
+-->
 
+*Nota*: IS MISSING es una extensión específica de SAS para SQL.\\
 
 En la mayoría de las implementaciones de bases de datos hay una distinción entre valores vacíos (faltantes) y valores nulos. Los valores nulos son un caso único y se comparan con éxito con cualquier cosa que no sean otros valores nulos. Se debe tener en cuenta cómo se manejan los valores nulos si se está utilizando SQL en un entorno que no sea SAS.
 
@@ -456,7 +458,7 @@ Se puede usar funciones de agregado (o resumen) para resumir los datos en las ta
 
 \begin{tabular}{ll}
 \textbf{Avg} promedio de valores & \textbf{NMiss} número de valores faltantes \\ 
-\textbf{Count} el número de valores que no faltan & \textbf{Prt} probabilidad de un mayor valor absoluto de t de Student \\
+\textbf{Count} el número de valores que no faltan & \textbf{Prt} probabilidad de un mayor valor absoluto\\ & de t de Student \\
 \textbf{CSS} suma corregida de cuadrados & \textbf{Range} rango de valores \\
 \textbf{CV} Coeficiente de variación &	\textbf{Std} Desviación estándar \\
 \textbf{Freq} (igual que Count) &	\textbf{StdErr} Error estándar de la media \\
