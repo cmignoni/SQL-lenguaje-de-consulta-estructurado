@@ -101,9 +101,6 @@ knitr::include_graphics("Image/union_comp.png")
 
 ### Otras variantes
 
-
-#### Exclución interna 
-
 **Exclución interna Izquierda**
 
 Esta consulta devolverá todos los registros de la tabla de la izquierda que no coincidan con ningún registro de la tabla de la derecha. La representación visual de esta unión semuestra en el siguiente diagrama:
@@ -121,6 +118,8 @@ Esta consulta devolverá todos los registros de la tabla de la derecha que no co
 #```{r, echo=FALSE, fig.cap='Exclución interna derecha', out.width=85}
 knitr::include_graphics("Image/exc_der2.jpg")
 ```
+
+---
 
 **Exclución interna exterior**
 
@@ -186,6 +185,8 @@ df1
 
 Y por otro lado, la tabla *Departamentos* con la lista de departamentos que existen en la empresa.
 
+***
+
 **Departamentos**
 
 ```{r, echo=F, eval=TRUE}
@@ -229,6 +230,8 @@ df <- merge(x = df1, y = df2, by = "departamentoID", all = TRUE)
 
 
 Como resultado muestra la siguiente lista:
+
+---
 
 ```{r, echo= FALSE, eval=TRUE }
 df
@@ -284,14 +287,18 @@ df<-merge(x = df1, y = df2, by = NULL)
 El conjunto de datos resultante será:
 
 ```{r, echo= FALSE, eval=TRUE }
-head(df, n=15)
+head(df, n=8)
 ```
 
-- - -
 
-*Nota: Se puede realizar una selección de variables utilizando la función __sqldf()__ una vez que se ha obtenido el conjunto de datos resultante de la union de dos o mas tablas.*
+\begin{tabular}{|l|}
+\hline
+Nota: Se puede realizar una selección de variables utilizando la función sqldf()\\ una vez que se ha obtenido el conjunto de datos resultante de la union de dos\\ o mas tablas. 
+\\
+\hline
+\end{tabular}
 
-* * *
+
 <!--
 ## Unir más de dos data frames en R
 
@@ -348,8 +355,6 @@ El procedimiento *PROC SQL* implementa el lenguaje de consulta estructurado est�
 
 ## Ejemplos prácticos
 
-
-
 **Unión interna**
 
 ```{r, echo=TRUE, eval=FALSE}
@@ -363,14 +368,14 @@ Proc sql;
 quit;
 ```
 
+<!--
 ```{r, echo=FALSE}
 #```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
 knitr::include_graphics("Image/Inner Join SAS.png")
 ```
-
-<!--
-![ ](Image/Inner Join SAS.png)
 -->
+
+![    ](Image/Inner Join SAS.png)
 
 
 **Unión izquierda**
@@ -386,14 +391,14 @@ proc sql;
 quit;
 ```
 
+<!--
 ```{r, echo=FALSE}
 #```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
 knitr::include_graphics("Image/LEFT JOIN SAS.png")
 ```
-
-<!--
-![ ](Image/LEFT JOIN SAS.png)
 -->
+
+![   ](Image/LEFT JOIN SAS.png)
 
 <!--
    title 'Coordinates of Capital Cities';
@@ -419,15 +424,15 @@ SELECT *
 quit;
 ```
 
+<!--
 ```{r, echo=FALSE}
 #```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
 knitr::include_graphics("Image/RIGHT JOIN SAS.png")
 ```
-
-
-<!--
-![ ](Image/RIGHT JOIN SAS.png)
 -->
+
+
+![    ](Image/RIGHT JOIN SAS.png)
 
 
 <!--
@@ -453,14 +458,14 @@ proc sql;
 quit;
 ```
 
+<!--
 ```{r, echo=FALSE}
 #```{r, echo=FALSE, fig.cap='Combinación completa', out.width=85}
 knitr::include_graphics("Image/FULL JOIN SAS.png")
 ```
-
-<!--
-![ ](Image/FULL JOIN SAS.png)
 -->
+
+![    ](Image/FULL JOIN SAS.png)
 
 <!--
    title 'Populations/Coordinates of World Cities';
