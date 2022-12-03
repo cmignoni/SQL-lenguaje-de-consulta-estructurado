@@ -57,7 +57,7 @@ proc print data=InfoMundo noobs;
 run;
 proc sql;
 /*	create table MundoCopia as*/
-	select *
+	select pais, poblac, densidad, urbana, relig, alfabet
 	from Datos.Mundo
 	where relig eq 'Musulmana' and
 		  alfabet > 50;
@@ -97,7 +97,7 @@ proc sql;
 quit;
 
 
-
+title "";
 data ResulData;
 set Datos.curso;
 where tpo > '20';
@@ -110,6 +110,13 @@ from Datos.curso
 where tpo > '20';
 quit;
 
+    proc sql;
+      select *
+      from Datos.curso
+      where tipotran is null;
+    quit;
+
+
 proc sql;
 select *
 from Datos.curso
@@ -117,18 +124,26 @@ where tpo between 20 and 40;
 quit;
 
 proc sql;
-	create table Mundo_ord as
+	title "Creación de Mundo_ord";
+*	create table Mundo_ord as;
 	select relig, pais, alfabet
 	from Datos.Mundo
 	where alfabet < 50
 	order by relig desc, pais;
 quit;
 
+    proc sql;
+    	select pais, poblac, densidad, relig
+    	from Datos.Mundo
+    	where relig eq 'Musulmana'
+    	order by pais;
+    quit;
+
+title " ";
 proc sql;
-create table datos.Tpob_localidades as
+*create table datos.Tpob_localidades as;
 select localidad length=20,
 	   depart length=20,
-	   prov,
 	   Tmuj,
 	   Tvar,
 sum(Tvar,Tmuj) as TPob
@@ -156,12 +171,49 @@ select depart length=15,
 	   prov,
 	   sum(TPob) as TotalTPob length=7
 from datos.Tpob_localidades
-order by prov, depart;
+group by prov, depart;
 quit;
 
+    proc sql;
+      select distinct relig
+      from datos.mundo;
+    quit;
+
+    Proc sql;
+  	  select distinct Make,
+  	  origin
+  	  from SASHELP.CARS;
+    quit;
 
 proc sql;
 select count(distinct relig)
 from datos.mundo;
 quit;
 
+    proc sql;
+      select depart length=15,
+      	   prov,
+      	   sum(TPob) as TotalTPob length=7
+      from datos.Tpob_localidades
+      group by prov, depart;
+      having TotalTPob gt 50000;
+    quit;
+
+
+	proc sql;
+        title "Consulta con WHERE";
+    	select pais,
+    	poblac,
+    	densidad
+    	from Datos.Mundo
+    	where relig eq 'Musulmana';
+    quit;
+
+    proc sql;
+        title "Consulta con HAVING";
+    	select pais,
+    	poblac,
+    	densidad
+    	from Datos.Mundo
+    	having relig eq 'Musulmana';
+    quit;
