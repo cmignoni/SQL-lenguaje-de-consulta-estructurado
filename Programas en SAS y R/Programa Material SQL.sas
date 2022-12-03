@@ -1,4 +1,4 @@
-libname datos "C:\Users\cmignoni\Google Drive\SQL lenguaje de consulta estructurado\Datos";
+libname datos "c:\Users\Cesar\Documents\GitHub\SQL-lenguaje-de-consulta-estructurado\Datos\";
 RUN;
 
 PROC IMPORT OUT= Localidades 
@@ -45,13 +45,16 @@ ods html close;
 ods pdf close;
 
 PROC SQL;
-	create table MundoInfo as
+	title "Creación del dataset InfoMundo";
+	create table InfoMundo as;
 	SELECT PAIS as PS, 
 		   POBLAC as PB, 
 		   RELIG label='Rel_País' length= 12
 	FROM Datos.mundo;
 quit;
 
+proc print data=InfoMundo noobs;
+run;
 proc sql;
 /*	create table MundoCopia as*/
 	select *
@@ -84,6 +87,7 @@ quit;
 
 proc sql;
 /*	create table MundoCopia as*/
+	title "Creación de una variable nueva";
 	select sexo,
 		   edad,
 		   altura,
