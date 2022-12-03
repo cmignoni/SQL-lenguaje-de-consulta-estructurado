@@ -169,10 +169,10 @@ En segundo lugar, el procedimiento finaliza con una instrucción *QUIT* en lugar
 
 Finalmente, las declaraciones **SQL** solo pueden ejecutarse dentro de *PROC SQL*. No se pueden colocar en otros procedimientos o en el código de un paso *DATA*.
 
-Los resultados que produce la consulta anterior se observa en la siguiente imagen que muestra una ventana output de SAS
+Los resultados que produce la consulta anterior se observa en la siguiente imagen que muestra una vista de resultados de SAS:
 
 ```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("Image/img_001.1.png")
+knitr::include_graphics("Image/Proc_sql_1.png")
 ```
 
 Las columnas se presentan en el orden en que se especificaron en SELECT y, de forma predeterminada, se utiliza la etiqueta de la columna (si existe).
@@ -208,6 +208,7 @@ También se puede crear un conjunto de datos SAS (*dataset*) a partir de los res
     quit;
 ```
 
+
 El comando *CREATE TABLE* hace dos cosas:
 
 1.	Crea un nuevo conjunto de datos SAS.
@@ -232,15 +233,19 @@ La siguiente consulta crearía un conjunto de datos SAS temporal llamado *MundoI
 
 ```{r, echo=TRUE,  eval=FALSE}
     proc sql;
-    	create table MundoInfo as
-    	select pais as PS, 
+    	create table InfoMundo as
     		 poblac as PB, 
+    	select pais as PS, 
     		 relig label=’Religión País’ length= 12
     	from datos.mundo;
     quit;
 ```
 
 Cuando se crea un nuevo conjunto de datos, todos los formatos y etiquetas del dataset original se transfieren de forma predeterminada. En la consulta anterior se asocia un nuevo ancho de campo con *relig* y se le adjunta una nueva etiqueta como: *Religión País*. Aquí también se cambia el nombre a *pais* y *poblac*. Cualquier otro formato o etiqueta se mantendrá como estaba hasta el momento en la tabla de origen.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_2.png")
+```
 
 No hay restricción en el número de atributos que se pueden establecer en una columna. Se puede renombrar, reformatear y volver a etiquetar, todo al mismo tiempo. Simplemente hay que separar las asignaciones de atributos con espacios. En la consulta anterior a la variable *relig* se le cambia la etiqueta y el ancho.
 
@@ -273,10 +278,10 @@ De la misma manera que se utilizó la palabra clave *AS* para cambiar el nombre 
     quit; 
 ```
 
-El resultado de la consulta anterior se vería de la siguiente manera:
+El resultado de la consulta anterior se visualiza de la siguiente manera:
 
 ```{r, echo=FALSE, fig.align='center'}
-knitr::include_graphics("Image/img_003.png")
+knitr::include_graphics("Image/Proc_sql_3.png")
 ```
 
 Se puede ver que la nueva columna en la consulta tiene la etiqueta "IMC", si se hubiera incluido un comando *CREATE TABLE* este habría sido el nombre de la variable. Si no se especifica *AS*, en la salida, la columna no habría tenido etiqueta, solo espacio en blanco, y el nombre de la variable en el conjunto de datos creado sería _TEMA001. Si para la creacion de nuevas columnas no se especifica "*AS nombre*", las mismas se llamarían _TEMA002, _TEMA003, etc. Observar la importancia de nombrar las nuevas columnas, principalmente cuando se esta creando un nuevo conjunto de datos o se esta haciendo una salida impresa.
@@ -297,6 +302,10 @@ Dentro de la consulta *SELECT FROM* la cláusula *WHERE* es opcional, si se incl
     quit; 
 ```
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_4.png")
+```
+
 La sintaxis de la cláusula *WHERE* admite más de una condición de selección para hacer que un registro sea incluido en la salida de la consulta. Cuando debe cumplirse más de una condición se utilizan los operadores lógicos *AND* y *OR* para agruparlas. Por ejemplo, si se quieren restringir la selección de filas desde el conjunto de datos "mundo" seleccionando solo los países que practican la religión "musulmana" y con un índice de alfabetización mayor a 50, se debe  agregar la segunda condición a la cláusula *WHERE*:
 
 ```{r, echo=TRUE,  eval=FALSE}
@@ -306,6 +315,10 @@ La sintaxis de la cláusula *WHERE* admite más de una condición de selección 
           where relig eq 'Musulmana' and
     	    alfabet > 50;
     quit;
+```
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_5.png")
 ```
 
 *Nota*: No hay límite para la cantidad de condiciones que puede tener la cláusula *WHERE*. 
@@ -370,6 +383,11 @@ Es posible usar los operadores *IS NULL* o *IS MISSING* para que devuelvan las f
     quit;
 ```
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_6.png")
+```
+
+
 *Nota*: IS MISSING es una extensión específica de **SAS** para **SQL**.
 
 En la mayoría de las implementaciones de bases de datos hay una distinción entre valores vacíos (faltantes) y valores nulos. Los valores nulos son un caso único y se comparan con éxito con cualquier cosa que no sean otros valores nulos. Se debe tener en cuenta cómo se manejan los valores nulos si se está utilizando **SQL** en un entorno que no sea SAS.
@@ -386,6 +404,9 @@ El operador *BETWEEN* le permite buscar un valor que se encuentre entre otros do
     quit;
 ```
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_7.png")
+```
 
 Cuando se usa *BETWEEN* hay que tener en cuenta que los puntos finales se incluyen en los resultados de la consulta. En el ejemplo anterior, 20 y 40 están incluidos.
 La variable utilizada con *BETWEEN* puede ser numérica o de caracteres. Hay que considerar los riesgos que existen al usar variables de tipo caracter en las comparaciones, es recomendable conocer cual es la clasificación que utiliza el sistema operativo, es decir, ¿"a" es mayor o menor que "A"? y también que, " a" no es lo mismo que "a ".
@@ -412,7 +433,13 @@ Tanto *SELECT… FROM…*, como *WHERE*, juegan un papel importante para determi
     quit;
 ```
 
-Esta consulta seleccionaría todos los países que practican la religión Musulmana y los ordena por nombre del país.
+Esta consulta selecciona todos los países que practican la religión Musulmana y los ordena por nombre del país.
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_8.png")
+```
+
+
 
 Como se puede observar, la sintaxis de la cláusula **ORDER BY** es similar a la declaración **BY** de **PROC SORT**. Si se quieren ordenar las filas por más de una variable, las mismas se deben colocar en la secuencia de orden separadas por comas.
 
@@ -432,6 +459,11 @@ El orden de clasificación predeterminado es ascendente. Para obtener una clasif
                  pais;
     quit;  
 ```
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_9.png")
+```
+
 
 La opción **DESC** se puede agregar a tantas variables como sea necesario, siempre después del nombre de la variable y antes de la coma o punto y coma. 
 
@@ -471,6 +503,11 @@ Si se incluye más de una columna en la lista de argumentos de la función, esa 
     quit;
 ```
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_10.png")
+```
+
+
 Si la lista de argumentos contiene una sola columna, la operación se realiza en todas las filas de la tabla. La siguiente consulta resumirá TPob, de diferentes maneras, para toda la tabla. Se observa que los resultados de esta consulta es una sola fila que contiene la suma, la media y los valores máximos de Población total por localidad (TPob), así como el número de filas con un valor faltante para la columna TPob, si hubiese.
 
 ```{r, echo=TRUE,  eval=FALSE}
@@ -485,6 +522,11 @@ Si la lista de argumentos contiene una sola columna, la operación se realiza en
 
 *Nota*: se puede hacer referencia a tantas funciones agregadas como sea necesario en una sola consulta y no todas tienen que actuar en la misma columna.
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_11.png")
+```
+
+
 En la consulta anterior se observa que no se enumeraron columnas aparte de las que usan las funciones de agregado. Recordar que se le está diciendo a **SQL** que resuma toda la columna de la tabla. ¿Cómo se interpretaría si también pidiéramos algunas otras columnas? Por ejemplo,
 
 ```{r, echo=TRUE,  eval=FALSE}
@@ -496,6 +538,10 @@ En la consulta anterior se observa que no se enumeraron columnas aparte de las q
     quit;
 ```
 
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("Image/Proc_sql_12.png")
+```
+
 La consulta calcula la suma total de la población para toda la tabla y no discrimina al departamento ni a la provincia para el cálculo.
 
 También recibirá una nota en la Log indicando que la consulta tuvo que ejecutarse más de una vez: 
@@ -505,7 +551,7 @@ NOTE: The query requires remerging summary statistics back
 with the original data.
 ```
 
-**La cláusula GROUP BY**
+<!--**La cláusula GROUP BY**-->
 
 Por defecto, una función de resumen actúa en todas las filas del dataset. Se puede resumir por grupos de datos con la cláusula *GROUP BY*. Por ejemplo: 
 
@@ -519,12 +565,12 @@ Por defecto, una función de resumen actúa en todas las filas del dataset. Se p
     quit;
 ```
 
-Los resultados parciales de la consulta anterior se muestran aquí:
+El resultado parcial de la consulta anterior se visualiza de la siguiente manera:
 
 ```{r, echo=FALSE}
-knitr::include_graphics("Image/img_100.png")
+knitr::include_graphics("Image/proc_sql_13.png")
 ```
- 
+
 En el resultado se Observa que hay una fila por departamento y que la población total se ha resumido. Recordar de la sección anterior que sin la cláusula *GROUP BY*, la población total de la tabla se habría agregado a cada fila de la tabla.
 
 El operador *DISTINCT* solo permite obtener una lista de los valores distintos para una o más columnas (variable) de una tabla y puede considerarse que tiene algunas de las propiedades de una función de resumen.
@@ -536,20 +582,26 @@ El operador *DISTINCT* solo permite obtener una lista de los valores distintos p
     quit;
 ```
 
-La consulta anterior devuelve una lista de todos los valores únicos de religión.
-No realiza un conteo, solo muestra una lista. Se pueden colocar varias columnas después del operador DISTINCT y se obtendrá una lista de todas las combinaciones de las columnas. Por ejemplo, la siguiente consulta devuelve los valores de las combinaciones únicas de marca y origen.
+```{r, echo=FALSE}
+knitr::include_graphics("Image/proc_sql_14.png")
+```
+
+La consulta anterior devuelve una lista de todos los valores únicos de religión. No realiza un conteo, solo muestra una lista. Se pueden colocar varias columnas después del operador *DISTINCT* y se obtendrá una lista de todas las combinaciones de las columnas. Por ejemplo, la siguiente consulta devuelve los valores de las combinaciones únicas de marca y origen.
 
 ```{r, echo=TRUE,  eval=FALSE}
     Proc sql;
-  	  select distinct Make,
-  	  origin
+  	  select distinct Make, distinct origin
   	  from SASHELP.CARS;
     quit;
 ```
 
+```{r, echo=FALSE}
+knitr::include_graphics("Image/proc_sql_15.png")
+```
+
 *Nota*: Cuando se enumeran varias columnas con *DISTINCT*, solo se devuelven las combinaciones de valores reales, no todas las combinaciones posibles. 
 
-La siguiente consulta muestra el uso de *DISTINCT* dentro de la función *COUNT*. Esta consulta devolverá el número de valores únicos de religión, en este caso sion 11.  
+La siguiente consulta muestra el uso de *DISTINCT* dentro de la función *COUNT*. Esta consulta devolverá el número de valores únicos de religión, en este caso son 10.  
 
 ```{r, echo=TRUE,  eval=FALSE}
     proc sql;
@@ -557,6 +609,7 @@ La siguiente consulta muestra el uso de *DISTINCT* dentro de la función *COUNT*
       from datos.mundo;
     quit;
 ```
+
 
 *Nota*: no se puede enumerar más de una columna en la función COUNT.
 
@@ -575,6 +628,11 @@ Para seleccionar filas en función de los resultados de una función de resumen 
     quit;
 ```
 
+```{r, echo=FALSE}
+knitr::include_graphics("Image/proc_sql_16.png")
+```
+
+
 En la consulta anterior, la condición de la cláusula *HAVING* (TotalTPob > 50000) se evalúa después de que la consulta se haya ejecutado y las filas se hayan agrupado y solo las filas que cumplan la condición se escribirán en el conjunto de resultados.
 
 Es importante destacar la diferencia entre las cláusulas *HAVING* y *WHERE*. La cláusula *WHERE* selecciona filas a medida que entran en la consulta. Tiene que hacer referencia a columnas que existen en la tabla de consulta o que se calculan utilizando columnas en las tablas de consulta. No puede hacer referencia a columnas de resumen. La cláusula *HAVING*, por otro lado, hace referencia a columnas de resumen a medida que las filas salen de la consulta.
@@ -591,6 +649,11 @@ Es importante destacar la diferencia entre las cláusulas *HAVING* y *WHERE*. La
     quit;
 ```	
 
+```{r, echo=FALSE}
+knitr::include_graphics("Image/proc_sql_17.png")
+```
+
+
 ```{r, echo=TRUE,  eval=FALSE}
     proc sql;
     	select pais,
@@ -600,6 +663,11 @@ Es importante destacar la diferencia entre las cláusulas *HAVING* y *WHERE*. La
     	having relig eq 'Musulmana';
     quit;
 ```
+
+```{r, echo=FALSE}
+knitr::include_graphics("Image/proc_sql_18.png")
+```
+
 
 No hay un resumen de las filas, por lo que los valores que entran y los que salen de la consulta son los mismos. Sin embargo, existe una gran diferencia cuando hay una función resumen en el comando *SELECT* y la cláusula *HAVING* hace referencia a una columna no resumida.
 
