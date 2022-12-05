@@ -1,6 +1,6 @@
 ---
 title: "SQL - Lenguaje de Consulta Estructurado"
-#subtitle: "Lenguaje de Consulta estándar en R y en SAS"
+subtitle: "Consultas estándar en R y en SAS"
 author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 fontsize: 12pt
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE,
 library(sqldf)
 ```
 
-# Lenguaje de Consulta estándar en R y en SAS
+<!--# Lenguaje de Consulta estándar en R y en SAS-->
 
 ## Introducción
 
@@ -90,7 +90,6 @@ UPDATE &	Utilizado para modificar los valores de los campos y registros \\
 DELETE &	Utilizado para eliminar registros de una tabla de una base de datos. \\
 
 \end{tabular}
-
 
 ### Cláusulas
 
@@ -207,7 +206,6 @@ También se puede crear un conjunto de datos SAS (*dataset*) a partir de los res
           from Datos.Mundo; 
     quit;
 ```
-
 
 El comando *CREATE TABLE* hace dos cosas:
 
@@ -439,8 +437,6 @@ Esta consulta selecciona todos los países que practican la religión Musulmana 
 knitr::include_graphics("Image/Proc_sql_8.png")
 ```
 
-
-
 Como se puede observar, la sintaxis de la cláusula **ORDER BY** es similar a la declaración **BY** de **PROC SORT**. Si se quieren ordenar las filas por más de una variable, las mismas se deben colocar en la secuencia de orden separadas por comas.
 
 ### Opción DESC en ORDER BY
@@ -472,18 +468,18 @@ La opción **DESC** se puede agregar a tantas variables como sea necesario, siem
 
 Se puede usar funciones de agregado (o resumen) para resumir los datos en las tablas. Estas funciones pueden actuar en múltiples columnas en una fila o en una sola columna a través de filas. La siguiente lista es de las funciones agregadas.
 
-\begin{tabular}{ll}
-\textbf{Avg} & promedio de valores \\
+\begin{tabular}{ll|ll}
+\textbf{Avg} & promedio de valores &
 \textbf{NMiss} & número de valores faltantes \\ 
-\textbf{Count} & el número de valores que no faltan \\
+\textbf{Count} & el número de valores que no faltan &
 \textbf{Range} & rango de valores  \\
-\textbf{Std} &	Desviación estándar \\
+\textbf{Std} &	Desviación estándar &
 \textbf{Freq} &	(igual que Count) \\
-\textbf{Sum} & Suma de valores \\
+\textbf{Sum} & Suma de valores &
 \textbf{Max} &	Valor máximo \\
-\textbf{Min} & Valor mínimo\\
+\textbf{Min} & Valor mínimo &
 \textbf{Mean} & (igual que Avg) \\
-\textbf{N} &  (igual que Count)\\	
+\textbf{N} &  (igual que Count) &	
 \textbf{Var} & Variancia\\
 
 \end{tabular}
@@ -683,7 +679,7 @@ La función sqldf() generalmente lleva un único argumento que es una instrucci�
       library("sqldf")
 ```
 
-El paquete *sqldf* es simple, desde el punto de vista de R hay una sola función por la que estár preocupados, y es: como se pasa a la función *sqldf()* una instrucción **SQL**, 
+El paquete *sqldf* es simple, desde el punto de vista de R hay una sola función por la que estár preocupados, y es: como se pasa a la función *sqldf()* una instrucción **SQL**. 
 
 
 ```{r echo=F, eval=TRUE}
@@ -696,9 +692,8 @@ chickwts <- read.csv(file = "Datos/chickwts.csv", sep=",", header = T, dec = "."
 
 
 ```{r echo=T, eval=T}
-
-      sqldf('SELECT age, circumference FROM Naranjo WHERE Tree = 1 ORDER BY circumference')
-
+      sqldf('SELECT age, circumference FROM Naranjo WHERE Tree = 1
+            ORDER BY circumference')
 ```
 
 ## Consultas SQL
@@ -708,7 +703,6 @@ Como se ha visto anteriormente en el curso, existe una gran cantidad de comandos
 ```{r echo=T, eval=F}
       sqldf("SELECT * FROM iris")
       sqldf("select * from iris")
-
 ```
 
 Los dos formas de escribir el comandos son equivalentes,
@@ -723,19 +717,17 @@ El siguiente comando fallaría suponiendo que no se haya creado un nuevo objeto 
       sqldf("SELECT * from IRIS")
 ```
 
-Recordando, la sintaxis básica para SELECT es:
+Recordando, la sintaxis básica para *SELECT* es:
 
 ```{r echo=T, eval=FALSE}
       SELECT variable1, variable2 FROM data
 ```
 
-En el siguiente ejemplo se presenta el comando SELECT para la función sqldf() 
+En el siguiente ejemplo se presenta el comando SELECT para la función *sqldf()* 
 
 ```{r echo=T, eval=T}
       BOD
-
       sqldf('SELECT demand FROM BOD')
-      
 ```
 
 *Nota*: **SQL** no acepta las variables con punto (.) en el nombre, y si lo tiene, debe colocase el nombre de la variable de consulta entre comillas.
@@ -749,29 +741,27 @@ iris1 <- sqldf('SELECT Petal.Width FROM iris')
 
 ```{r echo=T, eval=T}
 iris2 <- sqldf('SELECT "Petal.Width" FROM iris')
-
 ```
 
-### COMODÍN *
+### COMODÍN Asterisco (*)
 
 Se puede especificar un comodín asterisco para extraer todo.
 
 ```{r echo=T, eval=T}
       bod2 <- sqldf('SELECT * FROM BOD') 
-
 ```
 
-### LÍMIT
+### Cláusula LÍMIT
 
-Se utiliza para controlar el número de resultados devueltos
+Se utiliza para controlar el número de resultados devueltos.
 
 ```{r echo=T, eval=T}
       sqldf('SELECT * FROM iris LIMIT 5')
 ```
 
-###  ORDER BY
+### Cláusula ORDER BY
 
-Permite ordenar variables usando la siguiente sintaxis
+Permite ordenar variables usando la siguiente sintaxis:
 
 ```{r echo=T, eval=FALSE}
       ORDER BY var1 {ASC/DESC}, var2 {ASC/DESC}
@@ -780,43 +770,43 @@ Permite ordenar variables usando la siguiente sintaxis
 Donde la especificación de *ASC* para *ascendente* o *DESC* para *descendente* se realiza por variable.
 
 ```{r echo=T, eval=T}
-      sqldf("SELECT * FROM Naranjo ORDER BY age ASC, circumference DESC LIMIT 5")
+      sqldf("SELECT * FROM Naranjo ORDER BY age ASC, circumference 
+            DESC LIMIT 5")
 ```
 
-###  WHERE
+### Cláusula WHERE
 
-Las declaraciones condicionales se pueden agregar a través de WHERE:
+Las declaraciones condicionales se pueden agregar a través de *WHERE*:
 
 ```{r echo=T, eval=T}
       sqldf('SELECT demand FROM BOD WHERE Time < 3')
 ```
 
-### AND y OR
+### Cláusulas AND y OR
 
-Los operadores AND y OR son válidos para especificar cierto orden de las operaciones en la selección, si se usan juntos es aconsejable separar con paréntesis para especificar el orden.
+Los operadores *AND* y *OR* son válidos para especificar cierto orden de las operaciones en la selección, si se usan juntos es aconsejable separar con paréntesis para especificar el orden.
 
 ```{r echo=T, eval=T}
-      sqldf('SELECT * FROM rock WHERE (peri > 5000 AND shape < .05) OR perm > 1000')
+      sqldf('SELECT * FROM rock WHERE (peri > 5000 AND shape < .05) 
+            OR perm > 1000')
       
 ```
 
-Hay algunas formas más complicadas de usar WHERE:
+Hay algunas formas más complicadas de usar *WHERE*:
 
-### IN
+### Cláusula IN
 
-WHERE IN se usa de manera similar a %in% de R. También es compatible NOT.
+*WHERE IN* se usa de manera similar a %in% de **R**. También es compatible *NOT*.
 
 ```{r echo=T, eval=T}
       sqldf('SELECT * FROM BOD WHERE Time IN (1,7)')
 
       sqldf('SELECT * FROM BOD WHERE Time NOT IN (1,7)')
-      
-
 ```
 
-### LIKE
+### Cláusula LIKE
 
-LIKE puede considerarse como un comando de expresión regular débil. Solo permite el comodín % único que coincide con cualquier número de caracteres. Por ejemplo, para extraer los datos donde el feed termina con "bean":
+*LIKE* puede considerarse como un comando de expresión regular débil. Solo permite el comodín % único que coincide con cualquier número de caracteres. Por ejemplo, para extraer los datos donde el feed termina con "bean":
 
 ```{r echo=T, eval=T}
       sqldf('SELECT * FROM chickwts WHERE feed LIKE "%bean" LIMIT 5')
@@ -828,29 +818,24 @@ LIKE puede considerarse como un comando de expresión regular débil. Solo permi
 
 ## Datos agregados
 
-SELECT pueden crear utilizando los datos agregados AVG, MEDIAN, MAX, MIN y SUM como funciones de la lista de variables para seleccionar. La declaración GROUP BY se puede agregar al agregado por grupos. Se puede nombrar el AS
+*SELECT* pueden crear utilizando los datos agregados *AVG*, *MEDIAN*, *MAX*, *MIN* y *SUM* como funciones de la lista de variables para seleccionar. La declaración GROUP BY se puede agregar al agregado por grupos. Se puede nombrar el *AS*.
 
 ```{r echo=T, eval=T}
       sqldf("SELECT AVG(circumference) FROM Naranjo")
       
 
-      sqldf("SELECT tree, AVG(circumference) AS meancirc FROM Naranjo GROUP BY tree")
+      sqldf("SELECT tree, AVG(circumference) AS meancirc FROM Naranjo
+            GROUP BY tree")
       
 ```
 
-### Contando datos
+### Conteo de datos
 
-SELECT COUNT() Devuelve el número de observaciones. Pasar * o nada devuelve las k totales, pasar un  nombre de variable devuelve el número de entradas que no son NA. AS funciona igual de bien 
+*SELECT COUNT()* Devuelve el número de observaciones. Pasar * o nada devuelve las *k* totales, pasar un  nombre de variable devuelve el número de entradas que no son *NA*. *AS* funciona igual de bien 
 
 ```{r echo=T, eval=T}
       d <- data.frame(a = c(1,1,1), b = c(1,NA,NA)) 
-      
       d
-      
       sqldf("SELECT COUNT() as numrows FROM d")
-      
-
       sqldf("SELECT COUNT(b) FROM d")
-      
- 
 ```
