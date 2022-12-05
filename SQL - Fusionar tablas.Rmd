@@ -1,6 +1,6 @@
 ---
 title: "SQL - Lenguaje de Consulta Estructurado"
-#subtitle: "Unión de conjuntos de datos en R y en SAS"
+subtitle: "Unión de conjuntos de datos en R y en SAS"
 author: "César Mignoni"
 #date: "`r format(Sys.Date(), '%d.%m.%Y')`"
 fontsize: 12pt 
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-# Unión de conjuntos de datos en R y en SAS
+<!--# Unión de conjuntos de datos en R y en SAS-->
 
 ## Introducción
 
