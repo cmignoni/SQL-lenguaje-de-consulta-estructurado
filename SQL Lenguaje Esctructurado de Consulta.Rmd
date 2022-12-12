@@ -8,18 +8,24 @@ geometry: a4paper, margin=2cm
 # geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
 documentclass: article
 output: pdf_document
+toc: true
+lang: spanish
 df_print: paged
-fig_caption: yes
-keep_tex: yes
+#fig_width: 2
+#fig_height: 4
+#fig_caption: true
+keep_tex: true
 header-include:
-  -/usepackage[spanish]{babel}
+  - \usepackage{booktabs}
+  - \usepackage{sectsty} \sectionfont{\centering \emph}
+  - \usepackage[spanish]{babel}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
-                    fig.width=3, 
-                    fig.height=3,
+#                    fig.width=3, 
+#                    fig.height=3,
                     fig.align = "center", 
                     fig.pos="hp")
 library(sqldf)
@@ -27,7 +33,9 @@ library(sqldf)
 
 <!--# Lenguaje de Consulta estándar en R y en SAS-->
 
-## Introducción
+\newpage
+
+# Introducción
 
 El lenguaje de consulta estructurado __SQL__ (*Structured Query Language*) surge como un leguaje para realizar consultas en bases de datos relacional, modelo definido por el Dr. Edgar F. Codd de IBM en la década de los 70´, luego fue incorporado por muchos lenguajes de programación como una herramienta que permite realizar consultas y obtener conjuntos de datos de una manera rápida con una sintaxis sencilla. Actualmente, se lo puede utilizar en __SAS__ mediante el procedimiento _Proc sql_ y en __R__ con varios paquetes, uno de ellos _sqldf_. Es un lenguaje declarativo en el que las órdenes especifican cual debe ser el resultado y no la manera de conseguirlo, como ocurre en los lenguajes imperativos o procedimentales. Al ser declarativo, su aprendizaje es muy sencillo debido a que permiten escribir las órdenes, utilizando palabras clave (en inglés), como si fueran frases en las que se especifica que es lo que se quiere obtener. Por ejemplo:  
 
@@ -61,11 +69,11 @@ En una base de datos relacional, los resultados de la consulta van a ser datos i
 
 El resultado será un listado que tendrá tres columnas (numemp, nomemp, cargoid) provenientes de la tabla empleados, las filas corresponderán sólo a aquellos casos en los que el departamento (columna sigladepto) sea producción (=’prod’). En el caso de que sólo uno de los empleados cumpliera la condición se obtendría una sola fila como salida.
 
-## Componentes del SQL
+# Componentes del SQL
 
 El lenguaje **SQL** está compuesto por comandos, cláusulas, operadores y funciones de agregación. Estos elementos se combinan en las instrucciones para crear, actualizar y manipular las bases de datos.
 
-### Comandos
+## Comandos
 
 Existen dos tipos de comandos **SQL**:
 
@@ -91,7 +99,7 @@ DELETE &	Utilizado para eliminar registros de una tabla de una base de datos. \\
 
 \end{tabular}
 
-### Cláusulas
+## Cláusulas
 
 Las cláusulas son condiciones utilizadas para indicar cuales son los datos que se quieren seleccionar o manipular.
 
@@ -108,7 +116,7 @@ ORDER BY &	Utilizada para ordenar los registros seleccionados de acuerdo \\
 
 \end{tabular}
 
-### Operadores
+## Operadores
 
 **Operadores Lógicos**
 
@@ -120,6 +128,8 @@ OR &	Evalúa dos condiciones y devuelve un valor de verdad si alguna de las \\
 NOT &	Devuelve el valor contrario de la expresión. \\
 
 \end{tabular}
+
+\newpage
 
 **Operadores de Comparación**
 
@@ -135,7 +145,7 @@ BETWEEN & Permite especificar un intervalo de valores. \\
 LIKE & Compara una cadena de texto con una expresión regular. \\
 \end{tabular}
 
-### Funciones de Agregación
+## Funciones de Agregación
 
 Las funciones de agregación se usan dentro de una cláusula SELECT para devolver un único valor que se aplica a un grupo de registros.
 
@@ -146,6 +156,8 @@ SUM &	Suma los valores de un campo determinado. \\
 MAX &	Devuelve el valor más alto de un campo especificado. \\
 MIN &	Devuelve el valor más bajo de un campo especificado. \\
 \end{tabular}
+
+\newpage
 
 # Manipulación de datos en SAS utilzando SQL  
 
@@ -173,6 +185,7 @@ Los resultados que produce la consulta anterior se observa en la siguiente image
 ```{r, echo=FALSE, fig.align='center'}
 knitr::include_graphics("Image/Proc_sql_1.png")
 ```
+
 
 Las columnas se presentan en el orden en que se especificaron en SELECT y, de forma predeterminada, se utiliza la etiqueta de la columna (si existe).
 
@@ -368,6 +381,7 @@ El requisito de compatibilidad de datos de la cláusula *WHERE* es válido si se
 ### Operadores especiales de la cláusula WHERE
 
 Hay una serie de operadores que solo se pueden usar en una cláusula *WHERE*. Algunos de ellos pueden simplificar y hacer más eficiente la programación porque reducen el código necesaio para realizar algunas operaciones.
+
 
 •	Los operadores *IS NULL* y *IS MISSING*
 
@@ -667,6 +681,8 @@ knitr::include_graphics("Image/proc_sql_18.png")
 
 No hay un resumen de las filas, por lo que los valores que entran y los que salen de la consulta son los mismos. Sin embargo, existe una gran diferencia cuando hay una función resumen en el comando *SELECT* y la cláusula *HAVING* hace referencia a una columna no resumida.
 
+\newpage
+
 # Manipulación de datos en R utilzando SQL  
 
 Este material cubre solo la sintaxis de las consultas **SQL** utilizando el paquete *sqldf* (https://cran.r-project.org/web/packages/sqldf/index.html) que permite las consultas **SQL**. 
@@ -816,7 +832,7 @@ Hay algunas formas más complicadas de usar *WHERE*:
       
 ```
 
-## Datos agregados
+### Datos agregados
 
 *SELECT* pueden crear utilizando los datos agregados *AVG*, *MEDIAN*, *MAX*, *MIN* y *SUM* como funciones de la lista de variables para seleccionar. La declaración GROUP BY se puede agregar al agregado por grupos. Se puede nombrar el *AS*.
 
@@ -829,7 +845,7 @@ Hay algunas formas más complicadas de usar *WHERE*:
       
 ```
 
-### Conteo de datos
+**Conteo de datos**
 
 *SELECT COUNT()* Devuelve el número de observaciones. Pasar * o nada devuelve las *k* totales, pasar un  nombre de variable devuelve el número de entradas que no son *NA*. *AS* funciona igual de bien 
 
